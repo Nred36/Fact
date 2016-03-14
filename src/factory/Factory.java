@@ -32,22 +32,13 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     private Graphics dbg;
     Timer timer;
     int var, posX, posY;
+    long t = 0;
     int[][][] grid = new int[27][27][8];
     int[] rez = new int[6];
 
     public Factory() {//program name
         timer = new Timer(60, this);
-        timer.setInitialDelay(100);     //starts timer
-        timer.start();
-        Timer timer = new Timer(2000, new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //this will run every 2 seconds
-
-            }
-
-        });
+        timer.setInitialDelay(100);     //starts timer        
         /**
          * @param args the command line arguments
          */
@@ -82,10 +73,10 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         f.getContentPane().add("Center", applet);
         applet.init();
         f.pack();
-        f.setSize(925, 777);     //sets the window size
+
         f.setVisible(true); //makes it visible
         f.setResizable(false);//makes in unsizable
-        f.setBounds(700, 0, 817, 839);
+        f.setBounds(700, 0, 875, 839);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    //stops program if you x out the window    
     }
 
@@ -99,6 +90,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     public void paintComponent(Graphics g) {
         myPic = (Graphics2D) g;
 
+        System.out.println(rez[0]);
         //draw here
         for (int c = 0; c < 27; c++) {
             for (int r = 0; r < 27; r++) {
@@ -128,7 +120,29 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 }
             }
         }
-
+        myPic.setColor(Color.black);
+        for (int i = 0; i < 6; i++) {
+            myPic.fillRect(816, i * 36 + 49, 18, 18);
+            myPic.drawString(rez[i] + "", 837, i * 36 + 62);
+        }
+        //Iron
+        myPic.setColor(Color.orange);
+        myPic.fillRect(817, 50, 16, 16);
+        //Copper
+        myPic.setColor(Color.red);
+        myPic.fillRect(817, 86, 16, 16);
+        //Stone
+        myPic.setColor(Color.lightGray);
+        myPic.fillRect(817, 122, 16, 16);
+        //Water
+        myPic.setColor(Color.blue);
+        myPic.fillRect(817, 158, 16, 16);
+        //Oil
+        myPic.setColor(Color.black);
+        myPic.fillRect(817, 194, 16, 16);
+        //Coal
+        myPic.setColor(Color.darkGray);
+        myPic.fillRect(817, 230, 16, 16);
     }
 
     @Override
@@ -178,51 +192,58 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     public void mouseClicked(MouseEvent e) {
         posX = (int) Math.floor(e.getX() / 30);
         posY = (int) Math.floor(e.getY() / 30);
+        t = System.currentTimeMillis();
+        if (posX < 27 && posY<27) {
+            if (e.getButton() == 1) {
+                do {
+                } while ((System.currentTimeMillis() - t) / 1000 < 3);
+                if (grid[posX][posY][0] == 1) {
+                    rez[0]++;
+                } else if (grid[posX][posY][0] == 2) {
+                    rez[1]++;
+                } else if (grid[posX][posY][0] == 3) {
+                    rez[2]++;
+                } else if (grid[posX][posY][0] == 4) {
+                    rez[3]++;
+                } else if (grid[posX][posY][0] == 5) {
+                    rez[4]++;
+                } else if (grid[posX][posY][0] == 6) {
+                    rez[5]++;
+                }
+                t = 0;
 
-        if (e.getButton() == 1) {
-            if (grid[posX][posY][0] == 1) {
-                rez[0]++;
-            } else if (grid[posX][posY][0] == 2) {
-                rez[1]++;
-            } else if (grid[posX][posY][0] == 3) {
-                rez[2]++;
-            } else if (grid[posX][posY][0] == 4) {
-                rez[3]++;
-            } else if (grid[posX][posY][0] == 5) {
-                rez[4]++;
-            } else if (grid[posX][posY][0] == 6) {
-                rez[5]++;
-            }
-        } else if (e.getButton() == 3) {
+            } else if (e.getButton() == 3) {
 
-        } else if (e.getButton() == 2) {
-            String res = "", resNum = "", machine = ", None";
-            posX = (int) Math.floor(e.getX() / 30);
-            posY = (int) Math.floor(e.getY() / 30);
-            if (grid[posX][posY][0] == 0) {
-                res = ", Grass";
-                resNum = "Infinte";
-            } else if (grid[posX][posY][0] == 1) {
-                res = ", Iron";
-                resNum = String.valueOf(grid[posX][posY][1]);
-            } else if (grid[posX][posY][0] == 2) {
-                res = ", Copper";
-                resNum = String.valueOf(grid[posX][posY][1]);
-            } else if (grid[posX][posY][0] == 3) {
-                res = ", Stone";
-                resNum = String.valueOf(grid[posX][posY][1]);
-            } else if (grid[posX][posY][0] == 4) {
-                res = ", Water";
-                resNum = "Infinte";
-            } else if (grid[posX][posY][0] == 5) {
-                res = ", Oil";
-                resNum = String.valueOf(grid[posX][posY][1]);
-            } else if (grid[posX][posY][0] == 6) {
-                res = ", Coal";
-                resNum = String.valueOf(grid[posX][posY][1]);
+            } else if (e.getButton() == 2) {
+                String res = "", resNum = "", machine = ", None";
+                posX = (int) Math.floor(e.getX() / 30);
+                posY = (int) Math.floor(e.getY() / 30);
+                if (grid[posX][posY][0] == 0) {
+                    res = ", Grass";
+                    resNum = "Infinte";
+                } else if (grid[posX][posY][0] == 1) {
+                    res = ", Iron";
+                    resNum = String.valueOf(grid[posX][posY][1]);
+                } else if (grid[posX][posY][0] == 2) {
+                    res = ", Copper";
+                    resNum = String.valueOf(grid[posX][posY][1]);
+                } else if (grid[posX][posY][0] == 3) {
+                    res = ", Stone";
+                    resNum = String.valueOf(grid[posX][posY][1]);
+                } else if (grid[posX][posY][0] == 4) {
+                    res = ", Water";
+                    resNum = "Infinte";
+                } else if (grid[posX][posY][0] == 5) {
+                    res = ", Oil";
+                    resNum = String.valueOf(grid[posX][posY][1]);
+                } else if (grid[posX][posY][0] == 6) {
+                    res = ", Coal";
+                    resNum = String.valueOf(grid[posX][posY][1]);
+                }
+                System.out.println(posX + "," + posY + res + ": " + resNum + machine);
             }
-            System.out.println(posX + "," + posY + res + ": " + resNum + machine);
         }
+        repaint();
     }
 
     @Override
@@ -232,7 +253,6 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
