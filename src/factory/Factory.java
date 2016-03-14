@@ -5,6 +5,7 @@
  */
 package factory;//package name
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -31,7 +32,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     private Graphics dbg;
     Timer timer;
     int var, posX, posY;
-    int[][][] grid = new int[27][27][5];
+    int[][][] grid = new int[27][27][8];
 
     public Factory() {//program name
         timer = new Timer(60, this);
@@ -54,9 +55,13 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             FileReader fr = new FileReader("save.txt"); //reads from text file (located in "files"
             BufferedReader br = new BufferedReader(fr);
             //read and puts each line in the text document into a variable
-            var = Integer.parseInt(br.readLine());//line 1 in doc
-            var = Integer.parseInt(br.readLine()); //line 2 in doc
-
+            for (int i = 0; i < 8; i++) {
+                for (int c = 0; c < 27; c++) {
+                    for (int r = 0; r < 27; r++) {
+                        grid[c][r][i] = Integer.parseInt(br.readLine());
+                    }
+                }
+            }
             System.out.println("Loaded");//if it works
         } catch (IOException a) {
             System.out.println("Couldn't Load");//if it fails
@@ -89,11 +94,19 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
     public void paintComponent(Graphics g) {
         myPic = (Graphics2D) g;
-
+        
         //draw here
-        for (int r = 0; r < 27; r++) {
-            for (int c = 0; c < 27; c++) {
+        for (int c = 0; c < 27; c++) {
+            for (int r = 0; r < 27; r++) {
+                myPic.setColor(Color.black);
                 myPic.drawRect(c * 30, r * 30, 30, 30);
+                if (grid[c][r][0] == 0) {
+                    myPic.setColor(Color.green);
+                    myPic.fillRect(c * 30 +1, r * 30+1 , 29, 29);
+                } else if (grid[c][r][0] == 0) {
+                    myPic.setColor(Color.orange);
+                    myPic.fillRect(c * 30 + 1, r * 30 + 1, 29, 29);
+                }
             }
         }
 
@@ -119,7 +132,13 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             try {
                 FileWriter fw = new FileWriter("save.txt");//set place to write to in "Files"
                 PrintWriter pw = new PrintWriter(fw); //starts writing
-                pw.println(var);//writes var to line 1 of doc
+                for (int i = 0; i < 8; i++) {
+                    for (int c = 0; c < 27; c++) {
+                        for (int r = 0; r < 27; r++) {
+                            pw.println(grid[c][r][i]);//writes var to line 1 of doc
+                        }
+                    }
+                }
                 System.out.println("Saved");//it worked
                 pw.close(); //stop writing
             } catch (IOException a) {
@@ -135,9 +154,25 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        String res="",machine=", None";
         posX = (int) Math.floor(e.getX() / 30);
         posY = (int) Math.floor(e.getY() / 30);
-        System.out.println(posX + "," + posY);
+        if (grid[posX][posY][0] == 0) {
+            res = ", Grass";
+        }else if (grid[posX][posY][0] == 1) {
+            res = ", Iron";
+        }else if (grid[posX][posY][0] == 2) {
+            res = ", Copper";
+        }else if (grid[posX][posY][0] == 3) {
+            res = ", Stone";
+        }else if (grid[posX][posY][0] == 4) {
+            res = ", Water";
+        }else if (grid[posX][posY][0] == 5) {
+            res = ", Oil";
+        }else if (grid[posX][posY][0] == 6) {
+            res = ", Coal";
+        }
+        System.out.println(posX + "," + posY+res+machine);
     }
 
     @Override
