@@ -30,7 +30,8 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     Image dbImage, master;
     private Graphics dbg;
     Timer timer;
-    int var;
+    int var, posX, posY;
+    int[][][] grid = new int[27][27][5];
 
     public Factory() {//program name
         timer = new Timer(60, this);
@@ -60,6 +61,10 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         } catch (IOException a) {
             System.out.println("Couldn't Load");//if it fails
         }
+
+        addKeyListener(this);
+        addMouseListener(this);
+        addMouseMotionListener(this);
     }
 
     public static void main(String[] args) {
@@ -71,7 +76,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         f.setSize(925, 777);     //sets the window size
         f.setVisible(true); //makes it visible
         f.setResizable(false);//makes in unsizable
-        f.setBounds(400, 25, 925, 757);
+        f.setBounds(700, 0, 817, 839);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    //stops program if you x out the window    
     }
 
@@ -86,7 +91,11 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         myPic = (Graphics2D) g;
 
         //draw here
-        myPic.fillRect(300, 700, 30, 12);
+        for (int r = 0; r < 27; r++) {
+            for (int c = 0; c < 27; c++) {
+                myPic.drawRect(c * 30, r * 30, 30, 30);
+            }
+        }
 
     }
 
@@ -126,36 +135,38 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        posX = (int) Math.floor(e.getX() / 30);
+        posY = (int) Math.floor(e.getY() / 30);
+        System.out.println(posX + "," + posY);
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
