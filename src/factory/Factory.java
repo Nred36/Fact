@@ -160,7 +160,9 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     @Override
     public void keyPressed(KeyEvent e) {
         //key presses
-        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+        if (e.getKeyCode() == KeyEvent.VK_E) {
+
+        } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             //runs if escape is pressed
             try {
                 FileWriter fw = new FileWriter("save.txt");//set place to write to in "Files"
@@ -193,7 +195,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         posX = (int) Math.floor(e.getX() / 30);
         posY = (int) Math.floor(e.getY() / 30);
         t = System.currentTimeMillis();
-        if (posX < 27 && posY<27) {
+        if (posX < 27 && posY < 27) {
             if (e.getButton() == 1) {
                 do {
                 } while ((System.currentTimeMillis() - t) / 1000 < 3);
