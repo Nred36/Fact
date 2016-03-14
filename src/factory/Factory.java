@@ -33,6 +33,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     Timer timer;
     int var, posX, posY;
     int[][][] grid = new int[27][27][8];
+    int[] rez = new int[6];
 
     public Factory() {//program name
         timer = new Timer(60, this);
@@ -61,6 +62,9 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                         grid[c][r][i] = Integer.parseInt(br.readLine());
                     }
                 }
+            }
+            for (int i = 0; i < 6; i++) {
+                rez[i] = Integer.parseInt(br.readLine());
             }
             System.out.println("Loaded");//if it works
         } catch (IOException a) {
@@ -154,6 +158,9 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                         }
                     }
                 }
+                for (int i = 0; i < 6; i++) {
+                    pw.println(rez[i]);
+                }
                 System.out.println("Saved");//it worked
                 pw.close(); //stop writing
             } catch (IOException a) {
@@ -169,25 +176,53 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        String res = "", machine = ", None";
         posX = (int) Math.floor(e.getX() / 30);
         posY = (int) Math.floor(e.getY() / 30);
-        if (grid[posX][posY][0] == 0) {
-            res = ", Grass";
-        } else if (grid[posX][posY][0] == 1) {
-            res = ", Iron";
-        } else if (grid[posX][posY][0] == 2) {
-            res = ", Copper";
-        } else if (grid[posX][posY][0] == 3) {
-            res = ", Stone";
-        } else if (grid[posX][posY][0] == 4) {
-            res = ", Water";
-        } else if (grid[posX][posY][0] == 5) {
-            res = ", Oil";
-        } else if (grid[posX][posY][0] == 6) {
-            res = ", Coal";
+
+        if (e.getButton() == 1) {
+            if (grid[posX][posY][0] == 1) {
+                rez[0]++;
+            } else if (grid[posX][posY][0] == 2) {
+                rez[1]++;
+            } else if (grid[posX][posY][0] == 3) {
+                rez[2]++;
+            } else if (grid[posX][posY][0] == 4) {
+                rez[3]++;
+            } else if (grid[posX][posY][0] == 5) {
+                rez[4]++;
+            } else if (grid[posX][posY][0] == 6) {
+                rez[5]++;
+            }
+        } else if (e.getButton() == 3) {
+
+        } else if (e.getButton() == 2) {
+            String res = "", resNum = "", machine = ", None";
+            posX = (int) Math.floor(e.getX() / 30);
+            posY = (int) Math.floor(e.getY() / 30);
+            if (grid[posX][posY][0] == 0) {
+                res = ", Grass";
+                resNum = "Infinte";
+            } else if (grid[posX][posY][0] == 1) {
+                res = ", Iron";
+                resNum = String.valueOf(grid[posX][posY][1]);
+            } else if (grid[posX][posY][0] == 2) {
+                res = ", Copper";
+                resNum = String.valueOf(grid[posX][posY][1]);
+            } else if (grid[posX][posY][0] == 3) {
+                res = ", Stone";
+                resNum = String.valueOf(grid[posX][posY][1]);
+            } else if (grid[posX][posY][0] == 4) {
+                res = ", Water";
+                resNum = "Infinte";
+            } else if (grid[posX][posY][0] == 5) {
+                res = ", Oil";
+                resNum = String.valueOf(grid[posX][posY][1]);
+            } else if (grid[posX][posY][0] == 6) {
+                res = ", Coal";
+                resNum = String.valueOf(grid[posX][posY][1]);
+            }
+            System.out.println(posX + "," + posY + res + ": " + resNum + machine);
         }
-        System.out.println(posX + "," + posY + res + machine);
     }
 
     @Override
@@ -217,6 +252,6 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
 }
