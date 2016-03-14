@@ -94,7 +94,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
     public void paintComponent(Graphics g) {
         myPic = (Graphics2D) g;
-        
+
         //draw here
         for (int c = 0; c < 27; c++) {
             for (int r = 0; r < 27; r++) {
@@ -102,9 +102,24 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 myPic.drawRect(c * 30, r * 30, 30, 30);
                 if (grid[c][r][0] == 0) {
                     myPic.setColor(Color.green);
-                    myPic.fillRect(c * 30 +1, r * 30+1 , 29, 29);
-                } else if (grid[c][r][0] == 0) {
+                    myPic.fillRect(c * 30 + 1, r * 30 + 1, 29, 29);
+                } else if (grid[c][r][0] == 1) {
                     myPic.setColor(Color.orange);
+                    myPic.fillRect(c * 30 + 1, r * 30 + 1, 29, 29);
+                } else if (grid[c][r][0] == 2) {
+                    myPic.setColor(Color.red);
+                    myPic.fillRect(c * 30 + 1, r * 30 + 1, 29, 29);
+                } else if (grid[c][r][0] == 3) {
+                    myPic.setColor(Color.lightGray);
+                    myPic.fillRect(c * 30 + 1, r * 30 + 1, 29, 29);
+                } else if (grid[c][r][0] == 4) {
+                    myPic.setColor(Color.blue);
+                    myPic.fillRect(c * 30 + 1, r * 30 + 1, 29, 29);
+                } else if (grid[c][r][0] == 5) {
+                    myPic.setColor(Color.black);
+                    myPic.fillRect(c * 30 + 1, r * 30 + 1, 29, 29);
+                } else if (grid[c][r][0] == 6) {
+                    myPic.setColor(Color.darkGray);
                     myPic.fillRect(c * 30 + 1, r * 30 + 1, 29, 29);
                 }
             }
@@ -154,25 +169,25 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        String res="",machine=", None";
+        String res = "", machine = ", None";
         posX = (int) Math.floor(e.getX() / 30);
         posY = (int) Math.floor(e.getY() / 30);
         if (grid[posX][posY][0] == 0) {
             res = ", Grass";
-        }else if (grid[posX][posY][0] == 1) {
+        } else if (grid[posX][posY][0] == 1) {
             res = ", Iron";
-        }else if (grid[posX][posY][0] == 2) {
+        } else if (grid[posX][posY][0] == 2) {
             res = ", Copper";
-        }else if (grid[posX][posY][0] == 3) {
+        } else if (grid[posX][posY][0] == 3) {
             res = ", Stone";
-        }else if (grid[posX][posY][0] == 4) {
+        } else if (grid[posX][posY][0] == 4) {
             res = ", Water";
-        }else if (grid[posX][posY][0] == 5) {
+        } else if (grid[posX][posY][0] == 5) {
             res = ", Oil";
-        }else if (grid[posX][posY][0] == 6) {
+        } else if (grid[posX][posY][0] == 6) {
             res = ", Coal";
         }
-        System.out.println(posX + "," + posY+res+machine);
+        System.out.println(posX + "," + posY + res + machine);
     }
 
     @Override
