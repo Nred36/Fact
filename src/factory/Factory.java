@@ -35,6 +35,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     long t = 0;
     int[][][] grid = new int[27][27][8];
     int[] rez = new int[6];
+    boolean re = false;
 
     public Factory() {//program name
         timer = new Timer(60, this);
@@ -187,32 +188,48 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
     @Override
     public void keyReleased(KeyEvent e) {
-        //
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        re = true;
+        initThread();
+        if (e.getButton() == 1) {
+            System.out.println("p");
+        }
+        re = false;
         posX = (int) Math.floor(e.getX() / 30);
         posY = (int) Math.floor(e.getY() / 30);
-        t = System.currentTimeMillis();
         if (posX < 27 && posY < 27) {
             if (e.getButton() == 1) {
-                do {
-                } while ((System.currentTimeMillis() - t) / 1000 < 3);
-                if (grid[posX][posY][0] == 1) {
-                    rez[0]++;
-                } else if (grid[posX][posY][0] == 2) {
-                    rez[1]++;
-                } else if (grid[posX][posY][0] == 3) {
-                    rez[2]++;
-                } else if (grid[posX][posY][0] == 4) {
-                    rez[3]++;
-                } else if (grid[posX][posY][0] == 5) {
-                    rez[4]++;
-                } else if (grid[posX][posY][0] == 6) {
-                    rez[5]++;
-                }
-                t = 0;
+                Timer timer;
+                timer = new Timer(2000, new ActionListener() {
+
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (re == false) {
+                            if (grid[posX][posY][0] == 1) {
+                                rez[0]++;
+                            } else if (grid[posX][posY][0] == 2) {
+                                rez[1]++;
+                            } else if (grid[posX][posY][0] == 3) {
+                                rez[2]++;
+                            } else if (grid[posX][posY][0] == 4) {
+                                rez[3]++;
+                            } else if (grid[posX][posY][0] == 5) {
+                                rez[4]++;
+                            } else if (grid[posX][posY][0] == 6) {
+                                rez[5]++;
+                            }
+                            t = 0;
+                        }
+                    }
+                });
 
             } else if (e.getButton() == 3) {
 
@@ -244,22 +261,42 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 }
                 System.out.println(posX + "," + posY + res + ": " + resNum + machine);
             }
+
+            repaint();
         }
-        repaint();
+    }
+    volatile private boolean isRunning = false;
+
+    private synchronized boolean checkAndMark() {
+        if (isRunning) {
+            return false;
+        }
+        isRunning = true;
+        return true;
     }
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void initThread() {
+        if (checkAndMark()) {
+            new Thread() {
+                public void run() {
+                    do {
+                        //do something
+                    } while (re);
+                    isRunning = false;
+                }
+            }.start();
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        re = false;
+        System.out.println("r");
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
 
     @Override
