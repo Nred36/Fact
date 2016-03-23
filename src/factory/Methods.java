@@ -41,7 +41,7 @@ public class Methods {
         if (i == 0) {
             c = new Color(0, 255, 0);
         } else if (i == 1) {
-            c = new Color(255, 165, 0);
+            c = new Color(255, 150, 50);
         } else if (i == 2) {
             c = new Color(255, 0, 0);
         } else if (i == 3) {
