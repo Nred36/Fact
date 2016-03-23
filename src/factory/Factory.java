@@ -80,7 +80,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
         f.setVisible(true); //makes it visible
         f.setResizable(false);//makes in unsizable
-        f.setBounds(700, 0, 875, 839);
+        f.setBounds(700, 0, 902, 866);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    //stops program if you x out the window    
     }
 
@@ -99,18 +99,18 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         for (int c = 0; c < 27; c++) {
             for (int r = 0; r < 27; r++) {
                 myPic.setColor(Color.black);
-                myPic.drawRect(c * 30, r * 30, 30, 30);
+                myPic.drawRect(c * 31, r * 31, 31, 31);
 
                 myPic.setColor(m.color(grid[c][r][0]));
-                myPic.fillRect(c * 30 + 1, r * 30 + 1, 29, 29);
+                myPic.fillRect(c * 31 + 1, r * 31 + 1, 30, 30);
             }
         }
         for (int i = 0; i < 6; i++) {
             myPic.setColor(Color.black);
-            myPic.fillRect(816, i * 36 + 49, 18, 18);
-            myPic.drawString(rez[i] + "", 837, i * 36 + 62);
-            myPic.setColor(m.color(i));
-            myPic.fillRect(817, i * 36 + 50, 16, 16);
+            myPic.fillRect(843, i * 36 + 49, 18, 18);
+            myPic.drawString(rez[i] + "", 864, i * 36 + 62);
+            myPic.setColor(m.color(i+1));
+            myPic.fillRect(844, i * 36 + 50, 16, 16);
         }
     }
 
@@ -174,36 +174,28 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         posY = m.gridX(e.getY());
         if (posX < 27 && posY < 27) {
             if (e.getButton() == 1) {
-                Timer timer;
-                timer = new Timer(2000, new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (re == false) {
-                            if (grid[posX][posY][0] == 1) {
-                                rez[0]++;
-                            } else if (grid[posX][posY][0] == 2) {
-                                rez[1]++;
-                            } else if (grid[posX][posY][0] == 3) {
-                                rez[2]++;
-                            } else if (grid[posX][posY][0] == 4) {
-                                rez[3]++;
-                            } else if (grid[posX][posY][0] == 5) {
-                                rez[4]++;
-                            } else if (grid[posX][posY][0] == 6) {
-                                rez[5]++;
-                            }
-                            t = 0;
-                        }
+                if (re == false) {
+                    if (grid[posX][posY][0] == 1) {
+                        rez[0]++;
+                    } else if (grid[posX][posY][0] == 2) {
+                        rez[1]++;
+                    } else if (grid[posX][posY][0] == 3) {
+                        rez[2]++;
+                    } else if (grid[posX][posY][0] == 4) {
+                        rez[3]++;
+                    } else if (grid[posX][posY][0] == 5) {
+                        rez[4]++;
+                    } else if (grid[posX][posY][0] == 6) {
+                        rez[5]++;
                     }
-                });
-
+                    t = 0;
+                }
             } else if (e.getButton() == 3) {
 
             } else if (e.getButton() == 2) {
                 String res = "", machine = ", None";
-                posX = (int) Math.floor(e.getX() / 30);
-                posY = (int) Math.floor(e.getY() / 30);
+                posX = m.gridX(e.getX());
+                posY = m.gridX(e.getY());
 
                 res = m.text(grid[posX][posY][0], grid[posX][posY][1]);
                 System.out.println(posX + "," + posY + res + machine);
