@@ -94,7 +94,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     public void paintComponent(Graphics g) {
         myPic = (Graphics2D) g;
 
-        System.out.println(rez[0]);
+        //System.out.println(rez[0]);
         //draw here
         for (int c = 0; c < 27; c++) {
             for (int r = 0; r < 27; r++) {
@@ -166,9 +166,8 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     @Override
     public void mousePressed(MouseEvent e) {
         re = true;
-        initThread();
         if (e.getButton() == 1) {
-            System.out.println("p");
+            // System.out.println("p");
         }
         re = false;
         posX = m.gridX(e.getX());
@@ -202,64 +201,22 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             } else if (e.getButton() == 3) {
 
             } else if (e.getButton() == 2) {
-                String res = "", resNum = "", machine = ", None";
+                String res = "", machine = ", None";
                 posX = (int) Math.floor(e.getX() / 30);
                 posY = (int) Math.floor(e.getY() / 30);
-                if (grid[posX][posY][0] == 0) {
-                    res = ", Grass";
-                    resNum = "Infinte";
-                } else if (grid[posX][posY][0] == 1) {
-                    res = ", Iron";
-                    resNum = String.valueOf(grid[posX][posY][1]);
-                } else if (grid[posX][posY][0] == 2) {
-                    res = ", Copper";
-                    resNum = String.valueOf(grid[posX][posY][1]);
-                } else if (grid[posX][posY][0] == 3) {
-                    res = ", Stone";
-                    resNum = String.valueOf(grid[posX][posY][1]);
-                } else if (grid[posX][posY][0] == 4) {
-                    res = ", Water";
-                    resNum = "Infinte";
-                } else if (grid[posX][posY][0] == 5) {
-                    res = ", Oil";
-                    resNum = String.valueOf(grid[posX][posY][1]);
-                } else if (grid[posX][posY][0] == 6) {
-                    res = ", Coal";
-                    resNum = String.valueOf(grid[posX][posY][1]);
-                }
-                System.out.println(posX + "," + posY + res + ": " + resNum + machine);
+
+                res = m.text(grid[posX][posY][0], grid[posX][posY][1]);
+                System.out.println(posX + "," + posY + res + machine);
             }
 
             repaint();
-        }
-    }
-    volatile private boolean isRunning = false;
-
-    private synchronized boolean checkAndMark() {
-        if (isRunning) {
-            return false;
-        }
-        isRunning = true;
-        return true;
-    }
-
-    private void initThread() {
-        if (checkAndMark()) {
-            new Thread() {
-                public void run() {
-                    do {
-                        //do something
-                    } while (re);
-                    isRunning = false;
-                }
-            }.start();
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         re = false;
-        System.out.println("r");
+        //System.out.println("r");
     }
 
     @Override
