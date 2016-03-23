@@ -37,7 +37,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     int var, posX, posY;
     long t = 0;
     int[][][] grid = new int[27][27][8];
-    int[] rez = new int[6];
+    double[] rez = new double[6];
     boolean re = false;
 
     public Factory() {//program name
@@ -108,8 +108,8 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         for (int i = 0; i < 6; i++) {
             myPic.setColor(Color.black);
             myPic.fillRect(843, i * 36 + 49, 18, 18);
-            myPic.drawString(rez[i] + "", 864, i * 36 + 62);
-            myPic.setColor(m.color(i+1));
+            myPic.drawString((int)rez[i] + "", 864, i * 36 + 62);
+            myPic.setColor(m.color(i + 1));
             myPic.fillRect(844, i * 36 + 50, 16, 16);
         }
     }
@@ -176,17 +176,17 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             if (e.getButton() == 1) {
                 if (re == false) {
                     if (grid[posX][posY][0] == 1) {
-                        rez[0]++;
+                        rez[0] += 0.2;
                     } else if (grid[posX][posY][0] == 2) {
-                        rez[1]++;
+                        rez[1] += 0.2;
                     } else if (grid[posX][posY][0] == 3) {
-                        rez[2]++;
+                        rez[2] += 0.2;
                     } else if (grid[posX][posY][0] == 4) {
-                        rez[3]++;
+                        rez[3] += 0.2;
                     } else if (grid[posX][posY][0] == 5) {
-                        rez[4]++;
+                        rez[4] += 0.2;
                     } else if (grid[posX][posY][0] == 6) {
-                        rez[5]++;
+                        rez[5] += 0.2;
                     }
                     t = 0;
                 }
