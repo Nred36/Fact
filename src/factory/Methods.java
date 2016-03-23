@@ -19,12 +19,12 @@ public class Methods {
     }
 
     public int gridX(int x) {
-        int posX = (int) Math.floor(x / 30);
+        int posX = (int) Math.floor(x / 31);
         return (posX);
     }
 
     public int gridY(int y) {
-        int posY = (int) Math.floor(y / 30);
+        int posY = (int) Math.floor(y / 31);
         return (posY);
     }
 
