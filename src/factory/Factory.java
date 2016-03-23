@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -27,6 +28,8 @@ import javax.swing.Timer;
 
 public class Factory extends JApplet implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
 
+    Methods m = new Methods();
+    Point p = new Point();
     Graphics2D myPic;
     Image dbImage, master;
     private Graphics dbg;
@@ -97,53 +100,18 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             for (int r = 0; r < 27; r++) {
                 myPic.setColor(Color.black);
                 myPic.drawRect(c * 30, r * 30, 30, 30);
-                if (grid[c][r][0] == 0) {
-                    myPic.setColor(Color.green);
-                    myPic.fillRect(c * 30 + 1, r * 30 + 1, 29, 29);
-                } else if (grid[c][r][0] == 1) {
-                    myPic.setColor(Color.orange);
-                    myPic.fillRect(c * 30 + 1, r * 30 + 1, 29, 29);
-                } else if (grid[c][r][0] == 2) {
-                    myPic.setColor(Color.red);
-                    myPic.fillRect(c * 30 + 1, r * 30 + 1, 29, 29);
-                } else if (grid[c][r][0] == 3) {
-                    myPic.setColor(Color.lightGray);
-                    myPic.fillRect(c * 30 + 1, r * 30 + 1, 29, 29);
-                } else if (grid[c][r][0] == 4) {
-                    myPic.setColor(Color.blue);
-                    myPic.fillRect(c * 30 + 1, r * 30 + 1, 29, 29);
-                } else if (grid[c][r][0] == 5) {
-                    myPic.setColor(Color.black);
-                    myPic.fillRect(c * 30 + 1, r * 30 + 1, 29, 29);
-                } else if (grid[c][r][0] == 6) {
-                    myPic.setColor(Color.darkGray);
-                    myPic.fillRect(c * 30 + 1, r * 30 + 1, 29, 29);
-                }
+
+                myPic.setColor(m.color(grid[c][r][0]));
+                myPic.fillRect(c * 30 + 1, r * 30 + 1, 29, 29);
             }
         }
-        myPic.setColor(Color.black);
         for (int i = 0; i < 6; i++) {
+            myPic.setColor(Color.black);
             myPic.fillRect(816, i * 36 + 49, 18, 18);
             myPic.drawString(rez[i] + "", 837, i * 36 + 62);
+            myPic.setColor(m.color(i));
+            myPic.fillRect(817, i * 36 + 50, 16, 16);
         }
-        //Iron
-        myPic.setColor(Color.orange);
-        myPic.fillRect(817, 50, 16, 16);
-        //Copper
-        myPic.setColor(Color.red);
-        myPic.fillRect(817, 86, 16, 16);
-        //Stone
-        myPic.setColor(Color.lightGray);
-        myPic.fillRect(817, 122, 16, 16);
-        //Water
-        myPic.setColor(Color.blue);
-        myPic.fillRect(817, 158, 16, 16);
-        //Oil
-        myPic.setColor(Color.black);
-        myPic.fillRect(817, 194, 16, 16);
-        //Coal
-        myPic.setColor(Color.darkGray);
-        myPic.fillRect(817, 230, 16, 16);
     }
 
     @Override
@@ -203,8 +171,8 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             System.out.println("p");
         }
         re = false;
-        posX = (int) Math.floor(e.getX() / 30);
-        posY = (int) Math.floor(e.getY() / 30);
+        posX = m.gridX(e.getX());
+        posY = m.gridX(e.getY());
         if (posX < 27 && posY < 27) {
             if (e.getButton() == 1) {
                 Timer timer;
