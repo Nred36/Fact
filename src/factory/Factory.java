@@ -34,15 +34,18 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     Image dbImage, master;
     private Graphics dbg;
     Timer timer;
-    int var, posX, posY;
+    int var, posX, posY, mode = 1, resC;
+    double resN;
     long t = 0;
     int[][][] grid = new int[27][27][8];
     double[] rez = new double[6];
     boolean re = false;
+    Timer time;
 
     public Factory() {//program name
         timer = new Timer(60, this);
-        timer.setInitialDelay(100);     //starts timer        
+        timer.setInitialDelay(100);     //starts timer
+        timer.start();
         /**
          * @param args the command line arguments
          */
@@ -65,10 +68,9 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         } catch (IOException a) {
             System.out.println("Couldn't Load");//if it fails
         }
-
-        addKeyListener(this);
         addMouseListener(this);
         addMouseMotionListener(this);
+        addKeyListener(this);
     }
 
     public static void main(String[] args) {
@@ -80,8 +82,8 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
         f.setVisible(true); //makes it visible
         f.setResizable(false);//makes in unsizable
-        f.setBounds(700, 0, 902, 866);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    //stops program if you x out the window    
+        f.setBounds(700, 0, 902, 929);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    //stops program if you x out the window   
     }
 
     public void paint(Graphics g) {
@@ -96,21 +98,60 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
         //System.out.println(rez[0]);
         //draw here
-        for (int c = 0; c < 27; c++) {
-            for (int r = 0; r < 27; r++) {
-                myPic.setColor(Color.black);
-                myPic.drawRect(c * 31, r * 31, 31, 31);
+        if (mode == 0) {
 
-                myPic.setColor(m.color(grid[c][r][0]));
-                myPic.fillRect(c * 31 + 1, r * 31 + 1, 30, 30);
+        }
+        if (mode == 1 || mode == 2) {
+            for (int c = 0; c < 27; c++) {
+                for (int r = 0; r < 27; r++) {
+                    myPic.setColor(Color.black);
+                    myPic.drawRect(c * 31, r * 31, 31, 31);
+
+                    myPic.setColor(m.color(grid[c][r][0]));
+                    myPic.fillRect(c * 31 + 1, r * 31 + 1, 30, 30);
+                }
+            }
+
+            for (int i = 0; i < 6; i++) {
+                myPic.setColor(Color.black);
+                myPic.fillRect(843, i * 36 + 49, 18, 18);
+                myPic.drawString((int) rez[i] + "", 864, i * 36 + 62);
+                myPic.drawRect(i * 65 + 250, 839, 60, 60);
+                myPic.setColor(m.color(i + 1));
+                myPic.fillRect(844, i * 36 + 50, 16, 16);
+            }
+            myPic.drawRect(10, 854, 45, 20);
+            myPic.drawRect(55, 854, 45, 20);
+            myPic.drawRect(100, 854, 45, 20);
+            myPic.drawRect(145, 854, 45, 20);
+            myPic.drawRect(190, 854, 45, 20);
+
+            myPic.setColor(Color.red);
+            if (resN >= .2) {
+                myPic.fillRect(11, 855, 44, 19);
+            }
+            if (resN >= .4) {
+                myPic.fillRect(56, 855, 44, 19);
+            }
+            if (resN >= .6) {
+                myPic.fillRect(101, 855, 44, 19);
+            }
+            if (resN >= .8) {
+                myPic.fillRect(146, 855, 44, 19);
+            }
+            if (resN >= 1) {
+                myPic.fillRect(191, 855, 44, 19);
+            }
+            if (resN >= 1.2) {
+                resN = 0;
+                rez[resC] += 1;
             }
         }
-        for (int i = 0; i < 6; i++) {
+        if (mode == 2) {
             myPic.setColor(Color.black);
-            myPic.fillRect(843, i * 36 + 49, 18, 18);
-            myPic.drawString((int)rez[i] + "", 864, i * 36 + 62);
-            myPic.setColor(m.color(i + 1));
-            myPic.fillRect(844, i * 36 + 50, 16, 16);
+            myPic.drawRect(getWidth() / 2 - 250, 100, 500, 600);
+            myPic.setColor(Color.white);
+            myPic.fillRect(getWidth() / 2 - 249, 101, 499, 599);
         }
     }
 
@@ -122,15 +163,103 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     }
 
     @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        re = false;
+        posX = m.gridX(e.getX());
+        posY = m.gridX(e.getY());
+        if (posX < 27 && posY < 27) {
+            if (e.getButton() == 1) {
+                if (re == false) {
+                    time = new Timer(150, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            if (grid[posX][posY][0] == 1) {
+                                resC = 0;
+                                resN += 0.1;
+                            } else if (grid[posX][posY][0] == 2) {
+                                resC = 1;
+                                resN += 0.1;
+                            } else if (grid[posX][posY][0] == 3) {
+                                resC = 2;
+                                resN += 0.1;
+                            } else if (grid[posX][posY][0] == 4) {
+                                resC = 3;
+                                resN += 0.1;
+                            } else if (grid[posX][posY][0] == 5) {
+                                resC = 4;
+                                resN += 0.1;
+                            } else if (grid[posX][posY][0] == 6) {
+                                resC = 5;
+                                resN += .1;
+                            }
+                            repaint();
+                        }
+                    });
+                    time.setRepeats(true);
+                    time.start();
+
+                    t = 0;
+                }
+            } else if (e.getButton() == 3) {
+
+            } else if (e.getButton() == 2) {
+                String res = "", machine = ", None";
+                posX = m.gridX(e.getX());
+                posY = m.gridX(e.getY());
+
+                res = m.text(grid[posX][posY][0], grid[posX][posY][1]);
+                System.out.println(posX + "," + posY + res + machine);
+            }
+
+            repaint();
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        re = true;
+        time.stop();
+        resN = 0;
+        repaint();
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
+    }
+
+    @Override
     public void keyTyped(KeyEvent e) {
-        //
+        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         //key presses
         if (e.getKeyCode() == KeyEvent.VK_E) {
-
+            mode = 2;
+            System.out.println("Ff");
+            repaint();
         } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             //runs if escape is pressed
             try {
@@ -156,78 +285,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
     @Override
     public void keyReleased(KeyEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        re = true;
-        if (e.getButton() == 1) {
-            // System.out.println("p");
-        }
-        re = false;
-        posX = m.gridX(e.getX());
-        posY = m.gridX(e.getY());
-        if (posX < 27 && posY < 27) {
-            if (e.getButton() == 1) {
-                if (re == false) {
-                    if (grid[posX][posY][0] == 1) {
-                        rez[0] += 0.2;
-                    } else if (grid[posX][posY][0] == 2) {
-                        rez[1] += 0.2;
-                    } else if (grid[posX][posY][0] == 3) {
-                        rez[2] += 0.2;
-                    } else if (grid[posX][posY][0] == 4) {
-                        rez[3] += 0.2;
-                    } else if (grid[posX][posY][0] == 5) {
-                        rez[4] += 0.2;
-                    } else if (grid[posX][posY][0] == 6) {
-                        rez[5] += 0.2;
-                    }
-                    t = 0;
-                }
-            } else if (e.getButton() == 3) {
-
-            } else if (e.getButton() == 2) {
-                String res = "", machine = ", None";
-                posX = m.gridX(e.getX());
-                posY = m.gridX(e.getY());
-
-                res = m.text(grid[posX][posY][0], grid[posX][posY][1]);
-                System.out.println(posX + "," + posY + res + machine);
-            }
-
-            repaint();
-        }
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        re = false;
-        //System.out.println("r");
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-
-    }
 }
