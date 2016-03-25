@@ -82,7 +82,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
         f.setVisible(true); //makes it visible
         f.setResizable(false);//makes in unsizable
-        f.setBounds(700, 0, 902, 929);
+        f.setBounds(2020, 25, 902, 929);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    //stops program if you x out the window   
     }
 
@@ -175,7 +175,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         if (posX < 27 && posY < 27) {
             if (e.getButton() == 1) {
                 if (re == false) {
-                    time = new Timer(150, new ActionListener() {
+                    time = new Timer(350, new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             if (grid[posX][posY][0] == 1) {
@@ -222,9 +222,11 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        re = true;
-        time.stop();
-        resN = 0;
+        if (e.getButton() == 1) {
+            re = true;
+            time.stop();
+            resN = 0;
+        }
         repaint();
     }
 
@@ -257,8 +259,11 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     public void keyPressed(KeyEvent e) {
         //key presses
         if (e.getKeyCode() == KeyEvent.VK_E) {
-            mode = 2;
-            System.out.println("Ff");
+            if (mode == 1) {
+                mode = 2;
+            }else{
+                mode =1;
+            }
             repaint();
         } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             //runs if escape is pressed
