@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -38,6 +39,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     double resN;
     long t = 0;
     int[][][] grid = new int[27][27][8];
+    String[] machine = new String[20];
     double[] rez = new double[6];
     boolean re = false;
     Timer time;
@@ -65,6 +67,10 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             for (int i = 0; i < 6; i++) {
                 rez[i] = Integer.parseInt(br.readLine());
             }
+            for (int i = 0; i < 20; i++) {
+                machine[i] = br.readLine();
+            }
+
             System.out.println("Loaded");//if it works
         } catch (IOException a) {
             System.out.println("Couldn't Load");//if it fails
@@ -151,10 +157,16 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             }
         }
         if (mode == 2) {
-            myPic.setColor(Color.black);
-            myPic.drawRect(getWidth() / 2 - 250, 100, 500, 600);
             myPic.setColor(Color.white);
             myPic.fillRect(getWidth() / 2 - 249, 101, 499, 599);
+            myPic.setColor(Color.black);
+            myPic.drawRect(getWidth() / 2 - 250, 100, 500, 600);
+            for (int i = 0; i < 20; i++) {
+                myPic.drawString(machine[i], 220, i * 29 + 130);
+                myPic.drawString("Buy", 665, i * 29 + 130);
+                myPic.drawRect(663, i * 29 + 118, 23, 15);
+            }
+
         }
     }
 
@@ -172,41 +184,54 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
     @Override
     public void mousePressed(MouseEvent e) {
+
         re = false;
         posX = m.gridX(e.getX());
         posY = m.gridX(e.getY());
         if (posX < 27 && posY < 27) {
             if (e.getButton() == 1) {
-                if (re == false) {
-                    time = new Timer(350, new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            if (grid[posX][posY][0] == 1) {
-                                resC = 0;
-                                resN += 0.1;
-                            } else if (grid[posX][posY][0] == 2) {
-                                resC = 1;
-                                resN += 0.1;
-                            } else if (grid[posX][posY][0] == 3) {
-                                resC = 2;
-                                resN += 0.1;
-                            } else if (grid[posX][posY][0] == 4) {
-                                resC = 3;
-                                resN += 0.1;
-                            } else if (grid[posX][posY][0] == 5) {
-                                resC = 4;
-                                resN += 0.1;
-                            } else if (grid[posX][posY][0] == 6) {
-                                resC = 5;
-                                resN += .1;
+                if (mode == 1) {
+                    if (re == false) {
+                        time = new Timer(350, new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                if (grid[posX][posY][0] == 1) {
+                                    resC = 0;
+                                    resN += 0.1;
+                                } else if (grid[posX][posY][0] == 2) {
+                                    resC = 1;
+                                    resN += 0.1;
+                                } else if (grid[posX][posY][0] == 3) {
+                                    resC = 2;
+                                    resN += 0.1;
+                                } else if (grid[posX][posY][0] == 4) {
+                                    resC = 3;
+                                    resN += 0.1;
+                                } else if (grid[posX][posY][0] == 5) {
+                                    resC = 4;
+                                    resN += 0.1;
+                                } else if (grid[posX][posY][0] == 6) {
+                                    resC = 5;
+                                    resN += .1;
+                                }
+                                repaint();
                             }
-                            repaint();
-                        }
-                    });
-                    time.setRepeats(true);
-                    time.start();
+                        });
+                        time.setRepeats(true);
+                        time.start();
 
-                    t = 0;
+                        t = 0;
+                    }
+
+                } else if (mode == 2) {
+                    Rectangle m = new Rectangle(e.getX(), e.getY(), 1, 1);
+
+                    for (int i = 0; i < 20; i++) {
+                        Rectangle r = new Rectangle(663, i * 29 + 118, 23, 15);
+                        if (m.intersects(r)) {
+                            System.out.println("dd");
+                        }
+                    }
                 }
             } else if (e.getButton() == 3) {
 
@@ -224,7 +249,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (e.getButton() == 1) {
+        if (e.getButton() == 1 && mode == 1) {
             re = true;
             time.stop();
             resN = 0;

@@ -5836,3 +5836,23 @@
 0
 0
 0
+Excavator
+Crate
+Storage Container
+Conveyor Belt
+Pump
+Pipe
+Boiler
+Steam Turbine
+Power Line
+Furnace
+Transporter
+Electric Excavator
+Electric Pump
+Electric Furnace
+Electric Transporter
+Wind Turbine
+5
+5
+5
+5
