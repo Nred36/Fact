@@ -307,6 +307,9 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 for (int i = 0; i < 6; i++) {
                     pw.println(rez[i]);
                 }
+                for (int i = 0; i < 20; i++) {
+                    pw.println(machine[i]);
+                }
                 System.out.println("Saved");//it worked
                 pw.close(); //stop writing
             } catch (IOException a) {
