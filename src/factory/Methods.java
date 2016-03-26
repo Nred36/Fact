@@ -52,14 +52,17 @@ public class Methods {
             res = ", Stone";
             resNum = String.valueOf(n);
         } else if (i == 4) {
-            res = ", Water";
-            resNum = "Infinte";
+            res = ", Forest";
+            resNum = String.valueOf(n);
         } else if (i == 5) {
             res = ", Oil";
             resNum = String.valueOf(n);
         } else if (i == 6) {
             res = ", Coal";
             resNum = String.valueOf(n);
+        } else if (i == 7) {
+            res = ", Water";
+            resNum = "Infinte";
         }
         o = res + ": " + resNum;
         return (o);
@@ -75,12 +78,14 @@ public class Methods {
             c = new Color(255, 0, 0);
         } else if (i == 3) {//Stone
             c = new Color(175, 175, 175);
-        } else if (i == 4) {//Water
-            c = new Color(0, 0, 255);
+        } else if (i == 4) {//Forest
+            c = new Color(255, 255, 45);
         } else if (i == 5) {//Oil
             c = new Color(20, 20, 20);
         } else if (i == 6) {//Coal
             c = new Color(45, 45, 45);
+        } else if (i == 7) {//Water
+            c = new Color(0, 0, 255);
         } else {
             c = new Color(0, 0, 0);
         }

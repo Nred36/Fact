@@ -41,6 +41,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     double[] rez = new double[6];
     boolean re = false;
     Timer time;
+    String text = "";
 
     public Factory() {//program name
         timer = new Timer(60, this);
@@ -126,6 +127,8 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             myPic.drawRect(145, 854, 45, 20);
             myPic.drawRect(190, 854, 45, 20);
 
+            myPic.drawString(text, 675, 875);
+
             myPic.setColor(Color.red);
             if (resN >= .2) {
                 myPic.fillRect(11, 855, 44, 19);
@@ -208,12 +211,11 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             } else if (e.getButton() == 3) {
 
             } else if (e.getButton() == 2) {
-                String res = "", machine = ", None";
+                String machine = ", None";
                 posX = m.gridX(e.getX());
                 posY = m.gridX(e.getY());
 
-                res = m.text(grid[posX][posY][0], grid[posX][posY][1]);
-                System.out.println(posX + "," + posY + res + machine);
+                text = posX + "," + posY + m.text(grid[posX][posY][0], grid[posX][posY][1]) + machine;
             }
 
             repaint();
@@ -261,8 +263,8 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         if (e.getKeyCode() == KeyEvent.VK_E) {
             if (mode == 1) {
                 mode = 2;
-            }else{
-                mode =1;
+            } else {
+                mode = 1;
             }
             repaint();
         } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
