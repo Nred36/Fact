@@ -6,6 +6,7 @@
 package factory;//package name
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -35,12 +36,13 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     Image dbImage, master;
     private Graphics dbg;
     Timer timer;
-    int var, posX, posY, mode = 1, resC;
+    int var, posX, posY, mode = 0, resC;
     double resN;
     long t = 0;
     int[][][] grid = new int[27][27][8];
     String[] machine = new String[20];
     double[] rez = new double[6];
+    int[][] cost = new int[20][7];
     boolean re = false;
     Timer time;
     String text = "";
@@ -70,7 +72,11 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             for (int i = 0; i < 20; i++) {
                 machine[i] = br.readLine();
             }
-
+            for (int c = 0; c < 20; c++) {
+                for (int r = 0; r < 7; r++) {
+                    cost[c][r] = Integer.parseInt(br.readLine());
+                }
+            }
             System.out.println("Loaded");//if it works
         } catch (IOException a) {
             System.out.println("Couldn't Load");//if it fails
@@ -102,11 +108,13 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
     public void paintComponent(Graphics g) {
         myPic = (Graphics2D) g;
+        myPic.setFont(new Font("Dialog", Font.PLAIN, 12));
 
-        //System.out.println(rez[0]);
-        //draw here
         if (mode == 0) {
-
+            myPic.setFont(new Font("Dialog", Font.PLAIN, 24));
+            myPic.drawString("New", getWidth() / 2, 100);
+            myPic.drawString("Continue", getWidth() / 2, 200);
+            //myPic.fillRect(12,12,333,444);
         }
         if (mode == 1 || mode == 2) {
             for (int c = 0; c < 27; c++) {
@@ -119,7 +127,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 }
             }
 
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < 6; i++) {//Side Bars
                 myPic.setColor(Color.black);
                 myPic.fillRect(843, i * 36 + 49, 18, 18);
                 myPic.drawString((int) rez[i] + "", 864, i * 36 + 62);
@@ -127,15 +135,15 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 myPic.setColor(m.color(i + 1));
                 myPic.fillRect(844, i * 36 + 50, 16, 16);
             }
-            myPic.drawRect(10, 854, 45, 20);
+
+            myPic.drawString(text, 675, 875);//Info
+
+            myPic.drawRect(10, 854, 45, 20);//Progress Bar
             myPic.drawRect(55, 854, 45, 20);
             myPic.drawRect(100, 854, 45, 20);
             myPic.drawRect(145, 854, 45, 20);
             myPic.drawRect(190, 854, 45, 20);
-
-            myPic.drawString(text, 675, 875);
-
-            myPic.setColor(Color.red);
+            myPic.setColor(Color.red);//Progress Bar Inside
             if (resN >= .2) {
                 myPic.fillRect(11, 855, 44, 19);
             }
@@ -190,7 +198,9 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         posY = m.gridX(e.getY());
         if (posX < 27 && posY < 27) {
             if (e.getButton() == 1) {
-                if (mode == 1) {
+                if (mode == 0) {
+
+                } else if (mode == 1) {
                     if (re == false) {
                         time = new Timer(350, new ActionListener() {
                             @Override
@@ -253,6 +263,9 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             re = true;
             time.stop();
             resN = 0;
+        }
+        if (mode == 0) {
+            mode = 1;
         }
         repaint();
     }
