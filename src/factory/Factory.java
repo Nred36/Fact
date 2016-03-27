@@ -43,7 +43,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     double[] rez = new double[6];
     int[][] cost = new int[20][7];
     int[][] inv = new int[6][2];
-    boolean re = false;
+    boolean re = true;
     Timer time;
     String text = "";
 
@@ -82,6 +82,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             }
             for (int i = 0; i < 6; i++) {
                 inv[i][0] = Integer.parseInt(br.readLine());
+                inv[i][1] = Integer.parseInt(br.readLine());
             }
             System.out.println("Loaded");//if it works
         } catch (IOException a) {
@@ -101,7 +102,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
         f.setVisible(true); //makes it visible
         f.setResizable(false);//makes in unsizable
-        f.setBounds(2020, 25, 902, 929);
+        f.setBounds(1000, 25, 902, 929);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    //stops program if you x out the window   
     }
 
@@ -140,8 +141,12 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 myPic.drawRect(i * 65 + 250, 839, 60, 60);
                 myPic.setColor(m.color(i + 1));
                 myPic.fillRect(844, i * 36 + 50, 16, 16);
+                myPic.setColor(m.iColor(inv[i][0]));//Item
+                myPic.fillRect(i * 65 + 251, 840, 59, 59);
+                myPic.setColor(Color.white);
+                myPic.drawString((int) inv[i][1] + "", i * 65 + 302, 850);
             }
-
+            myPic.setColor(Color.black);
             myPic.drawString(text, 675, 875);//Info
 
             myPic.drawRect(10, 854, 45, 20);//Progress Bar
@@ -169,9 +174,6 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 resN = 0;
                 rez[resC] += 1;
             }
-
-            myPic.setColor(m.iColor(99));
-            myPic.fillRect(251, 840, 59, 59);
         }
         if (mode == 2) {
             myPic.setColor(Color.white);
@@ -183,19 +185,19 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 myPic.drawString("Buy", 665, i * 29 + 140);
                 myPic.drawRect(663, i * 29 + 128, 23, 15);
                 myPic.drawString(cost[i][1] + "", 345, i * 29 + 140);
-                myPic.drawString(cost[i][2] + "", 45 + 349, i * 29 + 140);
-                myPic.drawString(cost[i][3] + "", 116 + 353, i * 29 + 140);
-                myPic.drawString(cost[i][4] + "", 178 + 354, i * 29 + 140);
-                myPic.drawString(cost[i][5] + "", 239 + 345, i * 29 + 140);
-                myPic.drawString(cost[i][6] + "", 283 + 349, i * 29 + 140);
+                myPic.drawString(cost[i][2] + "", 394, i * 29 + 140);
+                myPic.drawString(cost[i][3] + "", 469, i * 29 + 140);
+                myPic.drawString(cost[i][4] + "", 532, i * 29 + 140);
+                myPic.drawString(cost[i][5] + "", 584, i * 29 + 140);
+                myPic.drawString(cost[i][6] + "", 632, i * 29 + 140);
 
             }
             myPic.drawString(res[0], 340, 120);
-            myPic.drawString(res[1], 40 + 345, 120);
-            myPic.drawString(res[2], 111 + 345, 120);
-            myPic.drawString(res[3], 173 + 345, 120);
-            myPic.drawString(res[4], 234 + 345, 120);
-            myPic.drawString(res[5], 278 + 345, 120);
+            myPic.drawString(res[1], 385, 120);
+            myPic.drawString(res[2], 456, 120);
+            myPic.drawString(res[3], 518, 120);
+            myPic.drawString(res[4], 579, 120);
+            myPic.drawString(res[5], 623, 120);
         }
     }
 
@@ -208,7 +210,31 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        Rectangle m = new Rectangle(e.getX(), e.getY(), 1, 1);
+        if (mode == 0) {
 
+        } else if (mode == 1) {
+
+        } else if (mode == 2) {
+            for (int i = 0; i < 20; i++) {
+                Rectangle r = new Rectangle(663, i * 29 + 128, 23, 15);
+                if (m.intersects(r)) {
+                    if ((cost[i][1] <= rez[0]) && (cost[i][2] <= rez[1]) && (cost[i][3] <= rez[2]) && (cost[i][4] <= rez[3]) && (cost[i][5] <= rez[4]) && (cost[i][6] <= rez[5])) {
+                        for (int c = 0; c < 6; c++) {
+                            rez[c] -= cost[i][c + 1];
+                        }
+                        for (int c = 0; c < 6; c++) {
+                            if (inv[c][0] == 99 || inv[c][0] == i) {
+                                inv[c][0] = i;
+                                inv[c][1] += 1;
+                                c = 10;
+                                i = 30;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -219,9 +245,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         posY = m.gridX(e.getY());
         if (posX < 27 && posY < 27) {
             if (e.getButton() == 1) {
-                if (mode == 0) {
-
-                } else if (mode == 1) {
+                if (mode == 1) {
                     if (re == false) {
                         //time = new Timer(350, new ActionListener() {
                         time = new Timer(35, new ActionListener() {
@@ -251,26 +275,9 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                         });
                         time.setRepeats(true);
                         time.start();
-
                         t = 0;
                     }
 
-                } else if (mode == 2) {
-                    Rectangle m = new Rectangle(e.getX(), e.getY(), 1, 1);
-
-                    for (int i = 0; i < 20; i++) {
-                        Rectangle r = new Rectangle(663, i * 29 + 128, 23, 15);
-                        if (m.intersects(r)) {
-                            if ((cost[i][1] <= rez[0]) && (cost[i][2] <= rez[1]) && (cost[i][3] <= rez[2]) && (cost[i][4] <= rez[3]) && (cost[i][5] <= rez[4]) && (cost[i][6] <= rez[5])) {
-                                for (int c = 0; c < 6; c++) {
-                                    rez[c] -= cost[i][c + 1];
-                                }
-                                if (inv[0][0] == 99) {
-
-                                }
-                            }
-                        }
-                    }
                 }
             } else if (e.getButton() == 3) {
 
@@ -288,7 +295,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (e.getButton() == 1 && mode == 1) {
+        if (e.getButton() == 1 && mode == 1 && m.gridX(e.getX()) < 27 && m.gridY(e.getY()) < 27) {
             re = true;
             time.stop();
             resN = 0;
