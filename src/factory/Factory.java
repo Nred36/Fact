@@ -41,6 +41,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     long t = 0;
     int[][][] grid = new int[27][27][8];
     String[] machine = new String[20];
+    String[] res = new String[7];
     double[] rez = new double[6];
     int[][] cost = new int[20][7];
     boolean re = false;
@@ -71,6 +72,9 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             }
             for (int i = 0; i < 20; i++) {
                 machine[i] = br.readLine();
+            }
+            for (int i = 0; i < 7; i++) {
+                res[i] = br.readLine();
             }
             for (int c = 0; c < 20; c++) {
                 for (int r = 0; r < 7; r++) {
@@ -170,11 +174,23 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             myPic.setColor(Color.black);
             myPic.drawRect(getWidth() / 2 - 250, 100, 500, 600);
             for (int i = 0; i < 20; i++) {
-                myPic.drawString(machine[i], 220, i * 29 + 130);
-                myPic.drawString("Buy", 665, i * 29 + 130);
-                myPic.drawRect(663, i * 29 + 118, 23, 15);
+                myPic.drawString(machine[i], 220, i * 29 + 140);
+                myPic.drawString("Buy", 665, i * 29 + 140);
+                myPic.drawRect(663, i * 29 + 128, 23, 15);                
+                    myPic.drawString(cost[i][0] + "", 345, i * 29 + 140);
+                    myPic.drawString(cost[i][1] + "", 45 + 345, i * 29 + 140);
+                    myPic.drawString(cost[i][2] + "", 116 + 345, i * 29 + 140);
+                    myPic.drawString(cost[i][3] + "", 178 + 345, i * 29 + 140);
+                    myPic.drawString(cost[i][4] + "", 239+ 345, i * 29 + 140);
+                    myPic.drawString(cost[i][5] + "", 283+ 345, i * 29 + 140);
+                
             }
-
+            myPic.drawString(res[0], 345, 120);
+            myPic.drawString(res[1], 45 + 345, 120);
+            myPic.drawString(res[2], 116 + 345, 120);
+            myPic.drawString(res[3], 178 + 345, 120);
+            myPic.drawString(res[4], 239 + 345, 120);
+            myPic.drawString(res[5], 283 + 345, 120);           
         }
     }
 

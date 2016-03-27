@@ -5856,6 +5856,13 @@ Wind Turbine
 5
 5
 5
+Iron
+Copper
+Stone
+Wood
+Oil
+Coil
+Water
 0
 20
 6
