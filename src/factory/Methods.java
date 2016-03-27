@@ -68,6 +68,54 @@ public class Methods {
         return (o);
     }
 
+    public Color iColor(int i) {
+        Color c;
+        if (i == 0) {//Ecavator
+            c = new Color(25, 0, 0);
+        } else if (i == 1) {//Crate
+            c = new Color(50, 0, 0);
+        } else if (i == 2) {//Storage Container
+            c = new Color(75, 0, 0);
+        } else if (i == 3) {//Conveyor Belt
+            c = new Color(100, 0, 0);
+        } else if (i == 4) {//
+            c = new Color(125, 0, 0);
+        } else if (i == 5) {//
+            c = new Color(150, 0, 0);
+        } else if (i == 6) {//
+            c = new Color(175, 0, 0);
+        } else if (i == 7) {//
+            c = new Color(200, 0, 0);
+        } else if (i == 8) {//
+            c = new Color(225, 0, 0);
+        } else if (i == 9) {//
+            c = new Color(250, 0, 0);
+        } else if (i == 10) {//
+            c = new Color(0, 25, 0);
+        } else if (i == 11) {//
+            c = new Color(0, 50, 0);
+        } else if (i == 12) {//
+            c = new Color(0, 75, 0);
+        } else if (i == 13) {//
+            c = new Color(0, 100, 0);
+        } else if (i == 14) {//
+            c = new Color(0, 125, 0);
+        } else if (i == 15) {//
+            c = new Color(0, 150, 0);
+        } else if (i == 16) {//
+            c = new Color(0, 175, 0);
+        } else if (i == 17) {//
+            c = new Color(0, 200, 0);
+        } else if (i == 18) {//
+            c = new Color(0, 225, 0);
+        } else if (i == 19) {//
+            c = new Color(0, 250, 0);
+        } else {
+            c = new Color(255, 255, 255);
+        }
+        return (c);
+    }
+
     public Color color(int i) {
         Color c;
         if (i == 0) {//Grass
