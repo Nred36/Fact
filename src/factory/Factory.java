@@ -344,6 +344,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             //runs if escape is pressed
            /* try {
+            
              FileWriter fw = new FileWriter("save.txt");//set place to write to in "Files"
              PrintWriter pw = new PrintWriter(fw); //starts writing
              for (int i = 0; i < 8; i++) {
