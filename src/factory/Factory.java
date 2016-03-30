@@ -214,26 +214,14 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         if (mode == 0) {
 
         } else if (mode == 1) {
-
-        } else if (mode == 2) {
             for (int i = 0; i < 20; i++) {
-                Rectangle r = new Rectangle(663, i * 29 + 128, 23, 15);
+                Rectangle r = new Rectangle(i * 65 + 250, 839, 60, 60);
                 if (m.intersects(r)) {
-                    if ((cost[i][1] <= rez[0]) && (cost[i][2] <= rez[1]) && (cost[i][3] <= rez[2]) && (cost[i][4] <= rez[3]) && (cost[i][5] <= rez[4]) && (cost[i][6] <= rez[5])) {
-                        for (int c = 0; c < 6; c++) {
-                            rez[c] -= cost[i][c + 1];
-                        }
-                        for (int c = 0; c < 6; c++) {
-                            if (inv[c][0] == 99 || inv[c][0] == i) {
-                                inv[c][0] = i;
-                                inv[c][1] += 1;
-                                c = 10;
-                                i = 30;
-                            }
-                        }
-                    }
+                    System.out.println("ff");
                 }
             }
+        } else if (mode == 2) {
+
         }
     }
 
