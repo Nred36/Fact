@@ -18,14 +18,9 @@ public class Methods {
         return (rnd);
     }
 
-    public int gridX(int x) {
-        int posX = (int) Math.floor(x / 31);
-        return (posX);
-    }
-
-    public int gridY(int y) {
-        int posY = (int) Math.floor(y / 31);
-        return (posY);
+    public int grid(int x) {
+        int pos = (int) Math.floor(x / 31);
+        return (pos);
     }
 
     public int wait(int t) {
@@ -111,7 +106,7 @@ public class Methods {
         } else if (i == 19) {//
             c = new Color(0, 250, 0);
         } else {
-            c = new Color(255, 255, 255);
+            c = null;
         }
         return (c);
     }

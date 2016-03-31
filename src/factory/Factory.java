@@ -21,7 +21,9 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.swing.JApplet;
 import javax.swing.JFrame;
 import javax.swing.Timer;
@@ -34,7 +36,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     Image dbImage, master;
     private Graphics dbg;
     Timer timer;
-    int var, posX, posY, mode = 0, resC;
+    int var, posX, posY, mode = 0, resC, x, y;
     double resN;
     long t = 0;
     int[][][] grid = new int[27][27][8];
@@ -67,7 +69,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 }
             }
             for (int i = 0; i < 6; i++) {
-                rez[i] = Integer.parseInt(br.readLine());
+                rez[i] = Double.parseDouble(br.readLine());
             }
             for (int i = 0; i < 20; i++) {
                 machine[i] = br.readLine();
@@ -123,13 +125,13 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             myPic.drawString("Continue", getWidth() / 2, 200);
             //myPic.fillRect(12,12,333,444);
         }
-        if (mode == 1 || mode == 2) {
+        if (mode == 1 || mode == 2 || mode == 3) {
             for (int c = 0; c < 27; c++) {
                 for (int r = 0; r < 27; r++) {
                     myPic.setColor(Color.black);
                     myPic.drawRect(c * 31, r * 31, 31, 31);
-
                     myPic.setColor(m.color(grid[c][r][0]));
+                    myPic.setColor(m.iColor(grid[c][r][2]));
                     myPic.fillRect(c * 31 + 1, r * 31 + 1, 30, 30);
                 }
             }
@@ -141,6 +143,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 myPic.drawRect(i * 65 + 250, 839, 60, 60);
                 myPic.setColor(m.color(i + 1));
                 myPic.fillRect(844, i * 36 + 50, 16, 16);
+                myPic.setColor(Color.white);
                 myPic.setColor(m.iColor(inv[i][0]));//Item
                 myPic.fillRect(i * 65 + 251, 840, 59, 59);
                 myPic.setColor(Color.white);
@@ -199,6 +202,11 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             myPic.drawString(res[4], 579, 120);
             myPic.drawString(res[5], 623, 120);
         }
+        if (mode
+                == 3) {
+            myPic.setColor(m.iColor(inv[resC][0]));//Item                
+            myPic.fillRect(x, y, 10, 10);
+        }
     }
 
     @Override
@@ -210,27 +218,53 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        Rectangle m = new Rectangle(e.getX(), e.getY(), 1, 1);
+
+        Rectangle p = new Rectangle(e.getX(), e.getY(), 1, 1);
         if (mode == 0) {
 
         } else if (mode == 1) {
-            for (int i = 0; i < 20; i++) {
+            for (int i = 0; i < 6; i++) {
                 Rectangle r = new Rectangle(i * 65 + 250, 839, 60, 60);
-                if (m.intersects(r)) {
-                    System.out.println("ff");
+                if (p.intersects(r) && inv[i][0] != 99) {
+                    mode = 3;
+                    resC = i;
                 }
             }
         } else if (mode == 2) {
+            for (int i = 0; i < 20; i++) {
+                Rectangle r = new Rectangle(663, i * 29 + 128, 23, 15);
+                if (p.intersects(r)) {
+                    if ((cost[i][1] <= rez[0]) && (cost[i][2] <= rez[1]) && (cost[i][3] <= rez[2]) && (cost[i][4] <= rez[3]) && (cost[i][5] <= rez[4]) && (cost[i][6] <= rez[5])) {
+                        for (int c = 0; c < 6; c++) {
+                            rez[c] -= cost[i][c + 1];
+                        }
+                        for (int c = 0; c < 6; c++) {
+                            if (inv[c][0] == 99 || inv[c][0] == i) {
+                                inv[c][0] = i;
+                                inv[c][1] += 1;
+                                c = 10;
+                                i = 30;
+                            }
+                        }
+                    }
+                }
+            }
 
+        } else if (mode == 3) {
+            posX = m.grid(e.getX());
+            posY = m.grid(e.getY());
+            grid[posX][posY][2] = 1;
+            inv[resC][0] = 99;
+            inv[resC][1] = 0;
+            mode = 1;
         }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-
         re = false;
-        posX = m.gridX(e.getX());
-        posY = m.gridX(e.getY());
+        posX = m.grid(e.getX());
+        posY = m.grid(e.getY());
         if (posX < 27 && posY < 27) {
             if (e.getButton() == 1) {
                 if (mode == 1) {
@@ -271,8 +305,8 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
             } else if (e.getButton() == 2) {
                 String machine = ", None";
-                posX = m.gridX(e.getX());
-                posY = m.gridX(e.getY());
+                posX = m.grid(e.getX());
+                posY = m.grid(e.getY());
 
                 text = posX + "," + posY + m.text(grid[posX][posY][0], grid[posX][posY][1]) + machine;
             }
@@ -283,7 +317,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (e.getButton() == 1 && mode == 1 && m.gridX(e.getX()) < 27 && m.gridY(e.getY()) < 27) {
+        if (e.getButton() == 1 && mode == 1 && m.grid(e.getX()) < 27 && m.grid(e.getY()) < 27) {
             re = true;
             time.stop();
             resN = 0;
@@ -311,7 +345,8 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
+        x = e.getX();
+        y = e.getY();
     }
 
     @Override
@@ -331,28 +366,42 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             repaint();
         } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             //runs if escape is pressed
-           /* try {
-            
-             FileWriter fw = new FileWriter("save.txt");//set place to write to in "Files"
-             PrintWriter pw = new PrintWriter(fw); //starts writing
-             for (int i = 0; i < 8; i++) {
-             for (int c = 0; c < 27; c++) {
-             for (int r = 0; r < 27; r++) {
-             pw.println(grid[c][r][i]);//writes var to line 1 of doc
-             }
-             }
-             }
-             for (int i = 0; i < 6; i++) {
-             pw.println(rez[i]);
-             }
-             for (int i = 0; i < 20; i++) {
-             pw.println(machine[i]);
-             }
-             System.out.println("Saved");//it worked
-             pw.close(); //stop writing
-             } catch (IOException a) {
-             System.out.println("ERROR");//it didnt work
-             }*/
+
+            try {
+                FileWriter fw = new FileWriter("save.txt");//set place to write to in "Files"
+                PrintWriter pw = new PrintWriter(fw); //starts writing
+                for (int i = 0; i < 8; i++) {
+                    for (int c = 0; c < 27; c++) {
+                        for (int r = 0; r < 27; r++) {
+                            // grid[c][r][2] = 99;
+                            pw.println(grid[c][r][i]);
+                        }
+                    }
+                }
+                for (int i = 0; i < 6; i++) {
+                    pw.println(rez[i]);
+                }
+                for (int i = 0; i < 20; i++) {
+                    pw.println(machine[i]);
+                }
+                for (int i = 0; i < 7; i++) {
+                    pw.println(res[i]);
+                }
+                for (int c = 0; c < 20; c++) {
+                    for (int r = 0; r < 7; r++) {
+                        pw.println(cost[c][r]);
+                    }
+                }
+                for (int i = 0; i < 6; i++) {
+                    pw.println(inv[i][0]);
+                    pw.println(inv[i][1]);
+                }
+
+                System.out.println("Saved");//it worked
+                pw.close(); //stop writing
+            } catch (IOException a) {
+                System.out.println("ERROR");//it didnt work
+            }
         }
     }
 
