@@ -93,6 +93,22 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         addMouseListener(this);
         addMouseMotionListener(this);
         addKeyListener(this);
+
+        Timer run = new Timer(100, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (int c = 0; c < 27; c++) {
+                    for (int r = 0; r < 27; r++) {
+                        if (grid[c][r][2] == 0) {
+                            res[grid[c][r][0]] += 1;
+                        }
+                    }
+                }
+            }
+        }
+        );
+        run.setRepeats(true);
+        run.start();
     }
 
     public static void main(String[] args) {
