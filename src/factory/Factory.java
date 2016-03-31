@@ -104,7 +104,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
         f.setVisible(true); //makes it visible
         f.setResizable(false);//makes in unsizable
-        f.setBounds(1000, 25, 902, 929);
+        f.setBounds(500, 25, 902, 929);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    //stops program if you x out the window   
     }
 
@@ -195,12 +195,11 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 myPic.drawString(cost[i][6] + "", 632, i * 29 + 140);
 
             }
-            myPic.drawString(res[0], 340, 120);
-            myPic.drawString(res[1], 385, 120);
-            myPic.drawString(res[2], 456, 120);
-            myPic.drawString(res[3], 518, 120);
-            myPic.drawString(res[4], 579, 120);
-            myPic.drawString(res[5], 623, 120);
+            int p = 0;
+            for (int i = 0; i < 6; i++) {
+                myPic.drawString(res[0], 30 * i + (340 + p), 120);
+                p = g.getFontMetrics().stringWidth(res[i]);
+            }
         }
         if (mode
                 == 3) {
