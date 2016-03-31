@@ -100,7 +100,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 for (int c = 0; c < 27; c++) {
                     for (int r = 0; r < 27; r++) {
                         if (grid[c][r][2] == 0) {
-                            res[grid[c][r][0]] += 1;
+                            res[grid[c][r][0] - 1] += 1;
                         }
                     }
                 }
