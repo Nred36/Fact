@@ -45,7 +45,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     double[] rez = new double[6];
     int[][] cost = new int[20][7];
     int[][] inv = new int[6][2];
-    boolean re = true;
+    boolean re = true, first = false;
     Timer time;
     String text = "";
 
@@ -61,6 +61,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             FileReader fr = new FileReader("save.txt"); //reads from text file (located in "files"
             BufferedReader br = new BufferedReader(fr);
             //read and puts each line in the text document into a variable
+            first = Boolean.parseBoolean(br.readLine());
             for (int i = 0; i < 8; i++) {
                 for (int c = 0; c < 27; c++) {
                     for (int r = 0; r < 27; r++) {
@@ -94,6 +95,15 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         addMouseMotionListener(this);
         addKeyListener(this);
 
+        if (first == true) {
+            for (int c = 0; c < 27; c++) {
+                for (int r = 0; r < 27; r++) {
+                    if (grid[c][r][0] != 0 && grid[c][r][0] < 7) {
+                        grid[c][r][1] = m.rNum(500, 2500);
+                    }
+                }
+            }
+        }
         Timer run = new Timer(100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
