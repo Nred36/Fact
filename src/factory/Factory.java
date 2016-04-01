@@ -100,8 +100,20 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
                 for (int c = 0; c < 27; c++) {
                     for (int r = 0; r < 27; r++) {
-                        if (grid[c][r][2] == 0 && grid[c][r][0] != 0 && grid[c][r][0] < 7) {
-                            rez[grid[c][r][0] - 1] += 1;
+                        if (grid[c][r][2] == 0) {
+                            if (grid[c][r][0] != 0 && grid[c][r][0] < 7) {
+                                rez[grid[c][r][0] - 1] += 1;
+                            }
+                            System.out.println(c);
+                            if (grid[c+1][r][0] != 0 && grid[c+1][r][0] < 7) {
+                                rez[grid[c + 1][r][0] - 1] += 1;
+                            }
+                            if (grid[c][r+1][0] != 0 && grid[c][r+1][0] < 7) {
+                                rez[grid[c][r + 1][0] - 1] += 1;
+                            }
+                            if (grid[c+1][r+1][0] != 0 && grid[c][r][0] < 7) {
+                                rez[grid[c + 1][r + 1][0] - 1] += 1;
+                            }
                         }
                     }
                 }
@@ -220,8 +232,12 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             myPic.drawString(res[5], 623, 120);
         }
         if (mode == 3) {
-            myPic.setColor(m.iColor(inv[resC][0]));//Item                
-            myPic.fillRect(x, y, 61, 61);
+            myPic.setColor(m.iColor(inv[resC][0]));//Item   
+            if (m.size(resC) == 0) {
+                myPic.fillRect(x, y, 30, 30);
+            } else if (m.size(resC) == 1) {
+                myPic.fillRect(x, y, 61, 61);
+            }
         }
         if (mode == 4) {
             myPic.setColor(Color.white);
@@ -279,17 +295,20 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             posX = m.grid(e.getX());
             posY = m.grid(e.getY());
             if (posX < 27 && posY < 27) {
-                grid[posX][posY][2] = resC;
-                if()
-                grid[posX + 1][posY][2] = resC;
-                grid[posX][posY + 1][2] = resC;
-                grid[posX + 1][posY + 1][2] = resC;
+                if (m.size(resC) == 0) {
+                    grid[posX][posY][2] = resC;
+                } else if (m.size(resC) == 1) {
+                    grid[posX + 1][posY][2] = resC;
+                    grid[posX][posY + 1][2] = resC;
+                    grid[posX + 1][posY + 1][2] = resC;
+                    grid[posX][posY][2] = resC;
+                }
                 inv[resC][1] -= 1;
                 if (inv[resC][1] == 0) {
                     inv[resC][0] = 99;
                     inv[resC][1] = 0;
                 }
-                System.out.println(grid[m.grid(x)][m.grid(y)][2]);
+                System.out.println(grid[posX][posY][2]);
             }
             mode = 1;
         }
