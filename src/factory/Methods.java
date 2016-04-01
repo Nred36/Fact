@@ -23,14 +23,6 @@ public class Methods {
         return (pos);
     }
 
-    public int wait(int t) {
-        long i = System.currentTimeMillis();
-
-        while ((System.currentTimeMillis() - i) / 1000 < t) {
-        }
-        return (1);
-    }
-
     public String text(int i, int n) {
         String o = "", res = "", resNum = "";
 

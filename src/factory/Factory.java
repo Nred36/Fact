@@ -101,19 +101,19 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 for (int c = 0; c < 27; c++) {
                     for (int r = 0; r < 27; r++) {
                         if (grid[c][r][2] == 0) {
-                            if (grid[c][r][0] != 0 && grid[c][r][0] < 7) {
-                                rez[grid[c][r][0] - 1] += 1;
-                            }
+                            // if (grid[c][r][0] != 0 && grid[c][r][0] < 7) {
+                            rez[grid[c][r][0] - 1] += 1;
+                            //}
                             System.out.println(c);
-                            if (grid[c + 1][r][0] != 0 && grid[c + 1][r][0] < 7) {
-                                rez[grid[c + 1][r][0] - 1] += 1;
-                            }
-                            if (grid[c][r + 1][0] != 0 && grid[c][r + 1][0] < 7) {
-                                rez[grid[c][r + 1][0] - 1] += 1;
-                            }
-                            if (grid[c + 1][r + 1][0] != 0 && grid[c][r][0] < 7) {
-                                rez[grid[c + 1][r + 1][0] - 1] += 1;
-                            }
+                            //if (grid[c + 1][r][0] != 0 && grid[c + 1][r][0] < 7) {
+                            rez[grid[c + 1][r][0] - 1] += 1;
+                            // }
+                            //if (grid[c][r + 1][0] != 0 && grid[c][r + 1][0] < 7) {
+                            rez[grid[c][r + 1][0] - 1] += 1;
+                            // }
+                            //  if (grid[c + 1][r + 1][0] != 0 && grid[c][r][0] < 7) {
+                            rez[grid[c + 1][r + 1][0] - 1] += 1;
+                            //   }
                         }
                     }
                 }
@@ -133,7 +133,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
         f.setVisible(true); //makes it visible
         f.setResizable(false);//makes in unsizable
-        f.setBounds(500, 25, 902, 929);
+        f.setBounds(480, 25, 902, 929);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    //stops program if you x out the window   
     }
 
@@ -167,16 +167,15 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
             for (int i = 0; i < 6; i++) {//Side Bars
                 myPic.setColor(Color.black);
-                myPic.fillRect(843, i * 36 + 49, 18, 18);
-                myPic.drawString((int) rez[i] + "", 864, i * 36 + 62);
+                myPic.fillRect(843, i * 36 + 49, 18, 18);//res ring
+                myPic.drawString((int) rez[i] + "", 864, i * 36 + 62);//resource number
                 myPic.drawRect(i * 65 + 250, 839, 60, 60);
-                myPic.setColor(m.color(i + 1));
-                myPic.fillRect(844, i * 36 + 50, 16, 16);
+                myPic.setColor(m.color(i + 1));//res colour
+                myPic.fillRect(844, i * 36 + 50, 16, 16);//resource display           
                 myPic.setColor(Color.white);
+                myPic.drawString((int) inv[i][1] + "", i * 65 + 302, 850);//Num Items
                 myPic.setColor(m.iColor(inv[i][0]));//Item
-                myPic.fillRect(i * 65 + 251, 840, 59, 59);
-                myPic.setColor(Color.white);
-                myPic.drawString((int) inv[i][1] + "", i * 65 + 302, 850);
+                myPic.fillRect(i * 65 + 251, 840, 59, 59);//inventory
             }
             myPic.setColor(Color.black);
             myPic.drawString(text, 675, 875);//Info
@@ -324,7 +323,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 if (mode == 1) {
                     if (re == false) {
                         //time = new Timer(350, new ActionListener() {
-                        time = new Timer(35, new ActionListener() {
+                        time = new Timer(5, new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 if (grid[posX][posY][0] == 1) {
