@@ -19,7 +19,7 @@ public class Methods {
     }
 
     public int grid(int x) {
-        int pos = (int) Math.floor(x / 31);        
+        int pos = (int) Math.floor(x / 31);
         return (pos);
     }
 
@@ -61,6 +61,51 @@ public class Methods {
         }
         o = res + ": " + resNum;
         return (o);
+    }
+
+    public int size(int i) {
+        if (i == 0) {//Ecavator
+            i = 1;
+        } else if (i == 1) {//Crate
+            i = 0;
+        } else if (i == 2) {//Storage Container
+
+        } else if (i == 3) {//Conveyor Belt
+
+        } else if (i == 4) {//Pump
+
+        } else if (i == 5) {//Pipe
+
+        } else if (i == 6) {//Boiler
+
+        } else if (i == 7) {//Steam Turbine
+
+        } else if (i == 8) {//Power Line
+
+        } else if (i == 9) {//
+
+        } else if (i == 10) {//
+
+        } else if (i == 11) {//
+
+        } else if (i == 12) {//
+
+        } else if (i == 13) {//
+
+        } else if (i == 14) {//
+
+        } else if (i == 15) {//
+
+        } else if (i == 16) {//
+
+        } else if (i == 17) {//
+
+        } else if (i == 18) {//
+
+        } else if (i == 19) {//
+
+        }
+        return (i);
     }
 
     public Color iColor(int i) {
