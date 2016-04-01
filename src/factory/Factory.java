@@ -176,6 +176,9 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                     myPic.setColor(m.color(grid[c][r][0]));
                     myPic.setColor(m.iColor(grid[c][r][2]));
                     myPic.fillRect(c * 31 + 1, r * 31 + 1, 30, 30);
+                    if (grid[c][r][1] == 0 && grid[c][r][0] < 7 && grid[c][r][0] != 0) {
+                        grid[c][r][0] = 0;
+                    }
                 }
             }
 
@@ -192,7 +195,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 myPic.fillRect(i * 65 + 251, 840, 59, 59);//inventory
             }
             myPic.setColor(Color.black);
-            myPic.drawString(text, 675, 875);//Info
+            myPic.drawString(text, 675, 575);//Info
 
             myPic.drawRect(10, 854, 45, 20);//Progress Bar
             myPic.drawRect(55, 854, 45, 20);
@@ -337,7 +340,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 if (mode == 1) {
                     if (re == false) {
                         //time = new Timer(350, new ActionListener() {
-                        time = new Timer(5, new ActionListener() {
+                        time = new Timer(1, new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 if (grid[posX][posY][0] == 1) {
