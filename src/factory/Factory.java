@@ -97,10 +97,11 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         Timer run = new Timer(100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 for (int c = 0; c < 27; c++) {
                     for (int r = 0; r < 27; r++) {
-                        if (grid[c][r][2] == 0) {
-                            res[grid[c][r][0] - 1] += 1;
+                        if (grid[c][r][2] == 0 && grid[c][r][0] != 0 && grid[c][r][0] < 7) {
+                            rez[grid[c][r][0] - 1] += 1;
                         }
                     }
                 }
@@ -141,7 +142,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             myPic.drawString("Continue", getWidth() / 2, 200);
             //myPic.fillRect(12,12,333,444);
         }
-        if (mode == 1 || mode == 2 || mode == 3) {
+        if (mode == 1 || mode == 2 || mode == 3 || mode == 4) {
             for (int c = 0; c < 27; c++) {
                 for (int r = 0; r < 27; r++) {
                     myPic.setColor(Color.black);
@@ -211,16 +212,22 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 myPic.drawString(cost[i][6] + "", 632, i * 29 + 140);
 
             }
-            int p = 0;
-            for (int i = 0; i < 6; i++) {
-                myPic.drawString(res[0], 30 * i + (340 + p), 120);
-                p = g.getFontMetrics().stringWidth(res[i]);
-            }
+            myPic.drawString(res[0], 340, 120);
+            myPic.drawString(res[1], 385, 120);
+            myPic.drawString(res[2], 456, 120);
+            myPic.drawString(res[3], 518, 120);
+            myPic.drawString(res[4], 579, 120);
+            myPic.drawString(res[5], 623, 120);
         }
-        if (mode
-                == 3) {
+        if (mode == 3) {
             myPic.setColor(m.iColor(inv[resC][0]));//Item                
-            myPic.fillRect(x, y, 10, 10);
+            myPic.fillRect(x, y, 61, 61);
+        }
+        if (mode == 4) {
+            myPic.setColor(Color.white);
+            myPic.fillRect(getWidth() / 2 - 249, 101, 499, 599);
+            myPic.setColor(Color.black);
+            myPic.drawRect(getWidth() / 2 - 250, 100, 500, 600);
         }
     }
 
@@ -242,8 +249,11 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 Rectangle r = new Rectangle(i * 65 + 250, 839, 60, 60);
                 if (p.intersects(r) && inv[i][0] != 99) {
                     mode = 3;
-                    resC = i;
+                    resC = inv[i][0];
                 }
+            }
+            if (m.grid(x) < 27 && m.grid(y) < 27 && grid[m.grid(x)][m.grid(y)][2] == 1) {
+                mode = 4;
             }
         } else if (mode == 2) {
             for (int i = 0; i < 20; i++) {
@@ -268,9 +278,19 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         } else if (mode == 3) {
             posX = m.grid(e.getX());
             posY = m.grid(e.getY());
-            grid[posX][posY][2] = 1;
-            inv[resC][0] = 99;
-            inv[resC][1] = 0;
+            if (posX < 27 && posY < 27) {
+                grid[posX][posY][2] = resC;
+                if()
+                grid[posX + 1][posY][2] = resC;
+                grid[posX][posY + 1][2] = resC;
+                grid[posX + 1][posY + 1][2] = resC;
+                inv[resC][1] -= 1;
+                if (inv[resC][1] == 0) {
+                    inv[resC][0] = 99;
+                    inv[resC][1] = 0;
+                }
+                System.out.println(grid[m.grid(x)][m.grid(y)][2]);
+            }
             mode = 1;
         }
     }
@@ -380,6 +400,8 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             }
             repaint();
         } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            mode = 1;
+        } else if (e.getKeyCode() == KeyEvent.VK_S) {
             //runs if escape is pressed
 
             try {

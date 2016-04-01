@@ -19,7 +19,7 @@ public class Methods {
     }
 
     public int grid(int x) {
-        int pos = (int) Math.floor(x / 31);
+        int pos = (int) Math.floor(x / 31);        
         return (pos);
     }
 
@@ -73,15 +73,15 @@ public class Methods {
             c = new Color(75, 0, 0);
         } else if (i == 3) {//Conveyor Belt
             c = new Color(100, 0, 0);
-        } else if (i == 4) {//
+        } else if (i == 4) {//Pump
             c = new Color(125, 0, 0);
-        } else if (i == 5) {//
+        } else if (i == 5) {//Pipe
             c = new Color(150, 0, 0);
-        } else if (i == 6) {//
+        } else if (i == 6) {//Boiler
             c = new Color(175, 0, 0);
-        } else if (i == 7) {//
+        } else if (i == 7) {//Steam Turbine
             c = new Color(200, 0, 0);
-        } else if (i == 8) {//
+        } else if (i == 8) {//Power Line
             c = new Color(225, 0, 0);
         } else if (i == 9) {//
             c = new Color(250, 0, 0);
