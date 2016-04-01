@@ -113,16 +113,20 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                         if (grid[c][r][2] == 0) {
                             // if (grid[c][r][0] != 0 && grid[c][r][0] < 7) {
                             rez[grid[c][r][0] - 1] += 1;
+                            grid[c][r][1] -= 1;
                             //}
                             System.out.println(c);
                             //if (grid[c + 1][r][0] != 0 && grid[c + 1][r][0] < 7) {
                             rez[grid[c + 1][r][0] - 1] += 1;
+                            grid[c + 1][r][1] -= 1;
                             // }
                             //if (grid[c][r + 1][0] != 0 && grid[c][r + 1][0] < 7) {
                             rez[grid[c][r + 1][0] - 1] += 1;
+                            grid[c][r + 1][1] -= 1;
                             // }
                             //  if (grid[c + 1][r + 1][0] != 0 && grid[c][r][0] < 7) {
                             rez[grid[c + 1][r + 1][0] - 1] += 1;
+                            grid[c + 1][r + 1][1] -= 1;
                             //   }
                         }
                     }
@@ -356,6 +360,9 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                                     resN += .1;
                                 }
                                 repaint();
+                                if (resN >= 1.2) {
+                                    grid[posX][posY][1] -= 1;
+                                }
                             }
                         });
                         time.setRepeats(true);
