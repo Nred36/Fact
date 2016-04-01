@@ -50,6 +50,14 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     String text = "";
 
     public Factory() {//program name
+        /*
+         mode 0: Main Menu
+         mode 1: Game
+         mode 2: Craft
+         mode 3: Placer
+         mode 4: Crate
+         mode 5: Inventory
+         */
         timer = new Timer(60, this);
         timer.setInitialDelay(100);     //starts timer
         timer.start();
@@ -168,7 +176,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             myPic.drawString("Continue", getWidth() / 2, 200);
             //myPic.fillRect(12,12,333,444);
         }
-        if (mode == 1 || mode == 2 || mode == 3 || mode == 4) {
+        if (mode == 1 || mode == 2 || mode == 3 || mode == 4 || mode == 5) {
             for (int c = 0; c < 27; c++) {
                 for (int r = 0; r < 27; r++) {
                     myPic.setColor(Color.black);
@@ -256,10 +264,18 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             }
         }
         if (mode == 4) {
+
+        }
+        if (mode == 5) {
             myPic.setColor(Color.white);
-            myPic.fillRect(getWidth() / 2 - 249, 101, 499, 599);
+            myPic.fillRect(getWidth() / 2 - 249, 160, 499, 520);
             myPic.setColor(Color.black);
-            myPic.drawRect(getWidth() / 2 - 250, 100, 500, 600);
+            myPic.drawRect(getWidth() / 2 - 250, 159, 500, 521);
+            for (int x = 0; x < 10; x++) {
+                for (int y = 0; y < 10; y++) {
+                    myPic.drawRect(x * 50 + (getWidth() / 2 - 250), y*50 + 180, 50, 50);
+                }
+            }
         }
     }
 
@@ -438,7 +454,15 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             }
             repaint();
         } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            mode = 1;
+            if (mode != 1) {
+                mode = 1;
+            }
+        } else if (e.getKeyCode() == KeyEvent.VK_TAB) {
+            if (mode == 1) {
+                mode = 5;
+            } else {
+                mode = 1;
+            }
         } else if (e.getKeyCode() == KeyEvent.VK_S) {
             //runs if escape is pressed
 
