@@ -13,6 +13,8 @@ import java.awt.Color;
  */
 public class Methods {
 
+    private int sizeY = 0;
+
     public int rNum(int min, int max) {
         int rnd = (int) Math.ceil(Math.random() * (max - min + 1) + (min - 1));
         return (rnd);
@@ -55,11 +57,13 @@ public class Methods {
         return (o);
     }
 
-    public int size(int i) {
+    public int sizeX(int i) {
         if (i == 0) {//Ecavator
-            i = 1;
+            i = 30;
+            sizeY = 30;
         } else if (i == 1) {//Crate
-            i = 0;
+            i = 60;
+            sizeY = 60;
         } else if (i == 2) {//Storage Container
 
         } else if (i == 3) {//Conveyor Belt
@@ -98,6 +102,10 @@ public class Methods {
 
         }
         return (i);
+    }
+
+    public int sizeY() {
+        return (sizeY);
     }
 
     public Color iColor(int i) {
