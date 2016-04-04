@@ -261,16 +261,26 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
         }
         if (mode == 4) {
-
+            myPic.setColor(Color.white);
+            myPic.fillRect(getWidth() / 2 - 249, 160, 499, 535);
+            myPic.setColor(Color.black);
+            myPic.drawRect(getWidth() / 2 - 250, 159, 500, 536);
+            for (int x = 0; x < 10; x++) {
+                for (int y = 0; y < 10; y++) {
+                    myPic.drawRect(x * 50 + (getWidth() / 2 - 250), y * 50 + 195, 50, 50);
+                }
+            }
         }
         if (mode == 5) {
             myPic.setColor(Color.white);
-            myPic.fillRect(getWidth() / 2 - 249, 160, 499, 520);
+            myPic.fillRect(getWidth() / 2 - 149, 160, 399, 435);
             myPic.setColor(Color.black);
-            myPic.drawRect(getWidth() / 2 - 250, 159, 500, 521);
-            for (int x = 0; x < 10; x++) {
-                for (int y = 0; y < 10; y++) {
-                    myPic.drawRect(x * 50 + (getWidth() / 2 - 250), y * 50 + 180, 50, 50);
+            myPic.setFont(new Font("Dialog", Font.PLAIN, 15));
+            myPic.drawString("Inventory", getWidth() / 2 - 29, 180);            
+            myPic.drawRect(getWidth() / 2 - 150, 159, 400, 436);
+            for (int x = 0; x < 5; x++) {
+                for (int y = 0; y < 5; y++) {
+                    myPic.drawRect(x * 70 + (getWidth() / 2 - 125), y * 70 + 195, 70, 70);
                 }
             }
         }
