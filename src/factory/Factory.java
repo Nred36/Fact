@@ -45,6 +45,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     double[] rez = new double[6];
     int[][] cost = new int[20][7];
     int[][] inv = new int[6][2];
+    int[][][][] store = new int[5][5][28][28];
     boolean re = true, first = false;
     Timer time;
     String text = "";
@@ -95,6 +96,16 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 inv[i][0] = Integer.parseInt(br.readLine());
                 inv[i][1] = Integer.parseInt(br.readLine());
             }
+            for (int x = 0; x < 5; x++) {
+                for (int y = 0; y < 5; y++) {
+                    for (int c = 0; c < 27; c++) {
+                        for (int r = 0; r < 27; r++) {
+                            store[x][y][c][r] = Integer.parseInt(br.readLine());
+                        }
+                    }
+                }
+            }
+
             System.out.println("Loaded");//if it works
         } catch (IOException a) {
             System.out.println("Couldn't Load");//if it fails
@@ -119,23 +130,22 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 for (int c = 0; c < 27; c++) {
                     for (int r = 0; r < 27; r++) {
                         if (grid[c][r][2] == 0) {
-                            // if (grid[c][r][0] != 0 && grid[c][r][0] < 7) {
-                            rez[grid[c][r][0] - 1] += 1;
-                            grid[c][r][1] -= 1;
-                            //}
-                            System.out.println(c);
-                            //if (grid[c + 1][r][0] != 0 && grid[c + 1][r][0] < 7) {
-                            rez[grid[c + 1][r][0] - 1] += 1;
-                            grid[c + 1][r][1] -= 1;
-                            // }
-                            //if (grid[c][r + 1][0] != 0 && grid[c][r + 1][0] < 7) {
-                            rez[grid[c][r + 1][0] - 1] += 1;
-                            grid[c][r + 1][1] -= 1;
-                            // }
-                            //  if (grid[c + 1][r + 1][0] != 0 && grid[c][r][0] < 7) {
-                            rez[grid[c + 1][r + 1][0] - 1] += 1;
-                            grid[c + 1][r + 1][1] -= 1;
-                            //   }
+                            if (m.sizeX(resC) >= 30 && grid[c][r][0] != 0 && grid[c][r][0] < 7 && c < 27 && r < 27) {
+                                rez[grid[c][r][0] - 1] += 1;
+                                grid[c][r][1] -= 1;
+                            }
+                            if (c < 26 && r < 27 && m.sizeX(resC) >= 60 && grid[c + 1][r][0] != 0 && grid[c + 1][r][0] < 7) {
+                                rez[grid[c + 1][r][0] - 1] += 1;
+                                grid[c + 1][r][1] -= 1;
+                            }
+                            if (c < 27 && r < 26 && m.sizeY(resC) >= 60 && grid[c][r + 1][0] != 0 && grid[c][r + 1][0] < 7) {
+                                rez[grid[c][r + 1][0] - 1] += 1;
+                                grid[c][r + 1][1] -= 1;
+                            }
+                            if (c < 26 && r < 26 && m.sizeY(resC) >= 60 && m.sizeX(resC) >= 60 && grid[c + 1][r + 1][0] != 0 && grid[c + 1][r + 1][0] < 7) {
+                                rez[grid[c + 1][r + 1][0] - 1] += 1;
+                                grid[c + 1][r + 1][1] -= 1;
+                            }
                         }
                     }
                 }
@@ -198,9 +208,10 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 myPic.setColor(m.color(i + 1));//res colour
                 myPic.fillRect(844, i * 36 + 50, 16, 16);//resource display           
                 myPic.setColor(Color.white);
-                myPic.drawString((int) inv[i][1] + "", i * 65 + 302, 850);//Num Items
                 myPic.setColor(m.iColor(inv[i][0]));//Item
                 myPic.fillRect(i * 65 + 251, 840, 59, 59);//inventory
+                myPic.setColor(Color.white);
+                myPic.drawString((int) inv[i][1] + "", i * 65 + 302, 850);//Num Items
             }
             myPic.setColor(Color.black);
             myPic.drawString(text, 675, 575);//Info
@@ -228,7 +239,8 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             }
             if (resN >= 1.2) {
                 resN = 0;
-                rez[resC] += 1;
+               // rez[resC] += 1;
+                store[0][0][0][0]=1;
             }
         }
         if (mode == 2) {
@@ -257,30 +269,35 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         }
         if (mode == 3) {
             myPic.setColor(m.iColor(inv[resC][0]));//Item  
-            myPic.fillRect(x, y, m.sizeX(resC), m.sizeY());
+            myPic.fillRect(x, y, m.sizeX(resC), m.sizeY(resC));
 
         }
         if (mode == 4) {
             myPic.setColor(Color.white);
-            myPic.fillRect(getWidth() / 2 - 249, 160, 499, 535);
+            myPic.fillRect(getWidth() / 2 - 199, 160, 399, 410);
             myPic.setColor(Color.black);
-            myPic.drawRect(getWidth() / 2 - 250, 159, 500, 536);
-            for (int x = 0; x < 10; x++) {
-                for (int y = 0; y < 10; y++) {
-                    myPic.drawRect(x * 50 + (getWidth() / 2 - 250), y * 50 + 195, 50, 50);
+            myPic.setFont(new Font("Dialog", Font.PLAIN, 15));
+            myPic.drawString("Crate", getWidth() / 2 - (g.getFontMetrics().stringWidth("Crate") / 2), 180);
+            myPic.drawRect(getWidth() / 2 - 200, 159, 400, 411);
+            for (int x = 0; x < 5; x++) {
+                for (int y = 0; y < 5; y++) {
+                    myPic.drawRect(x * 70 + (getWidth() / 2 - 175), y * 70 + 195, 70, 70);
                 }
             }
         }
-        if (mode == 5) {
+        if (mode == 5) {//Inventory
             myPic.setColor(Color.white);
-            myPic.fillRect(getWidth() / 2 - 149, 160, 399, 435);
+            myPic.fillRect(getWidth() / 2 - 199, 160, 399, 410);
             myPic.setColor(Color.black);
             myPic.setFont(new Font("Dialog", Font.PLAIN, 15));
-            myPic.drawString("Inventory", getWidth() / 2 - 29, 180);            
-            myPic.drawRect(getWidth() / 2 - 150, 159, 400, 436);
+            myPic.drawString("Inventory", getWidth() / 2 - 29, 180);
+            myPic.drawRect(getWidth() / 2 - 200, 159, 400, 411);
             for (int x = 0; x < 5; x++) {
                 for (int y = 0; y < 5; y++) {
-                    myPic.drawRect(x * 70 + (getWidth() / 2 - 125), y * 70 + 195, 70, 70);
+                    myPic.setColor(Color.black);
+                    myPic.drawRect(x * 70 + (getWidth() / 2 - 175), y * 70 + 195, 70, 70);
+                    myPic.setColor(m.color(store[x][y][0][0]));
+                    myPic.fillRect(x * 70 + (getWidth() / 2 - 165), y * 70 + 205, 50, 50);
                 }
             }
         }
@@ -333,23 +350,27 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         } else if (mode == 3) {
             posX = m.grid(e.getX());
             posY = m.grid(e.getY());
+            System.out.println(posX);
+            System.out.println(posY);
             if (posX < 27 && posY < 27) {
-                if (m.sizeX(resC) == 30) {
-                    grid[posX][posY][2] = resC;
-                } else if (m.sizeX(resC) == 1) {
-                    grid[posX + 1][posY][2] = resC;
+                if (m.sizeX(resC) >= 30) {
                     grid[posX][posY][2] = resC;
                 }
-                if (m.sizeX(resC) == 1) {
-                    grid[posX + 1][posY + 1][2] = resC;
+                if (m.sizeX(resC) >= 60 && posX < 26) {
+                    grid[posX + 1][posY][2] = resC;
+                }
+                if (m.sizeY(resC) >= 60 && posY < 26) {
                     grid[posX][posY + 1][2] = resC;
                 }
+                if (m.sizeY(resC) >= 60 && m.sizeX(resC) >= 60 && posX < 26 && posY < 26) {
+                    grid[posX + 1][posY + 1][2] = resC;
+                }
+
                 inv[resC][1] -= 1;
-                if (inv[resC][1] == 0) {
+                if (inv[resC][1] <= 0) {
                     inv[resC][0] = 99;
                     inv[resC][1] = 0;
                 }
-                System.out.println(grid[posX][posY][2]);
             }
             mode = 1;
         }
@@ -484,6 +505,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             try {
                 FileWriter fw = new FileWriter("save.txt");//set place to write to in "Files"
                 PrintWriter pw = new PrintWriter(fw); //starts writing
+                pw.println(first);
                 for (int i = 0; i < 8; i++) {
                     for (int c = 0; c < 27; c++) {
                         for (int r = 0; r < 27; r++) {
@@ -510,6 +532,15 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                     pw.println(inv[i][1]);
                 }
 
+                for (int x = 0; x < 8; x++) {
+                    for (int y = 0; y < 8; y++) {
+                        for (int c = 0; c < 27; c++) {
+                            for (int r = 0; r < 27; r++) {
+                                pw.println(99);
+                            }
+                        }
+                    }
+                }
                 System.out.println("Saved");
                 pw.close();
             } catch (IOException a) {
