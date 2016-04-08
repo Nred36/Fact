@@ -166,7 +166,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         f.setVisible(true); //makes it visible
         f.setResizable(false);//makes in unsizable
         f.setBounds(480, 25, 902, 929);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    //stops program if you x out the window   
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    //stops program if you x out the window
     }
 
     public void paint(Graphics g) {
@@ -206,7 +206,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 myPic.drawString((int) rez[i] + "", 864, i * 36 + 62);//resource number
                 myPic.drawRect(i * 65 + 250, 839, 60, 60);
                 myPic.setColor(m.color(i + 1));//res colour
-                myPic.fillRect(844, i * 36 + 50, 16, 16);//resource display           
+                myPic.fillRect(844, i * 36 + 50, 16, 16);//resource display
                 myPic.setColor(Color.white);
                 myPic.setColor(m.iColor(inv[i][0]));//Item
                 myPic.fillRect(i * 65 + 251, 840, 59, 59);//inventory
@@ -239,8 +239,8 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             }
             if (resN >= 1.2) {
                 resN = 0;
-               // rez[resC] += 1;
-                store[0][0][0][0]=1;
+                rez[resC] += 1;
+                //store[0][0][0][0]=1;
             }
         }
         if (mode == 2) {
@@ -268,7 +268,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             myPic.drawString(res[5], 623, 120);
         }
         if (mode == 3) {
-            myPic.setColor(m.iColor(inv[resC][0]));//Item  
+            myPic.setColor(m.iColor(inv[resC][0]));//Item
             myPic.fillRect(x, y, m.sizeX(resC), m.sizeY(resC));
 
         }
