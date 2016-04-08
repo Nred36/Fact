@@ -61,10 +61,10 @@ public class Methods {
         if (i == 0) {//Ecavator
             i = 60;
             sizeY = 60;
-        } else if (i == 1) {//Crate
-            i = 30;
-            sizeY = 30;
-        } else if (i == 2) {//Storage Container
+        } else if (i == 1) {//
+            i = 60;
+            sizeY = 60;
+        } else if (i == 2) {//
 
         } else if (i == 3) {//Conveyor Belt
 
@@ -174,6 +174,10 @@ public class Methods {
         } else if (i == 6) {//Coal
             c = new Color(45, 45, 45);
         } else if (i == 7) {//Water
+            c = new Color(0, 0, 255);
+        } else if (i == 11) {
+            c = new Color(0, 0, 255);
+        } else if (i == 12) {
             c = new Color(0, 0, 255);
         } else {
             c = new Color(255, 255, 255);

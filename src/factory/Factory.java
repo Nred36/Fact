@@ -29,7 +29,7 @@ import javax.swing.JFrame;
 import javax.swing.Timer;
 
 public class Factory extends JApplet implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
-
+    
     Methods m = new Methods();
     Point p = new Point();
     Graphics2D myPic;
@@ -45,19 +45,18 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     double[] rez = new double[6];
     int[][] cost = new int[20][7];
     int[][] inv = new int[6][2];
-    int[][][][] store = new int[5][5][28][28];
     boolean re = true, first = false;
     Timer time;
     String text = "";
-
+    
     public Factory() {//program name
         /*
          mode 0: Main Menu
          mode 1: Game
          mode 2: Craft
-         mode 3: Placer
-         mode 4: Crate
-         mode 5: Inventory
+         mode 3: Placer        
+         mode 4: Inventory
+         mode 5: Furnace
          */
         timer = new Timer(60, this);
         timer.setInitialDelay(100);     //starts timer
@@ -65,7 +64,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         /**
          * @param args the command line arguments
          */
-
+        
         try {//READ
             FileReader fr = new FileReader("save.txt"); //reads from text file (located in "files"
             BufferedReader br = new BufferedReader(fr);
@@ -96,16 +95,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 inv[i][0] = Integer.parseInt(br.readLine());
                 inv[i][1] = Integer.parseInt(br.readLine());
             }
-            for (int x = 0; x < 5; x++) {
-                for (int y = 0; y < 5; y++) {
-                    for (int c = 0; c < 27; c++) {
-                        for (int r = 0; r < 27; r++) {
-                            store[x][y][c][r] = Integer.parseInt(br.readLine());
-                        }
-                    }
-                }
-            }
-
+            
             System.out.println("Loaded");//if it works
         } catch (IOException a) {
             System.out.println("Couldn't Load");//if it fails
@@ -113,7 +103,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         addMouseListener(this);
         addMouseMotionListener(this);
         addKeyListener(this);
-
+        
         if (first == true) {
             for (int c = 0; c < 27; c++) {
                 for (int r = 0; r < 27; r++) {
@@ -126,7 +116,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         Timer run = new Timer(100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                
                 for (int c = 0; c < 27; c++) {
                     for (int r = 0; r < 27; r++) {
                         if (grid[c][r][2] == 0) {
@@ -155,38 +145,38 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         run.setRepeats(true);
         run.start();
     }
-
+    
     public static void main(String[] args) {
         JFrame f = new JFrame(""); //name on program
         JApplet applet = new Factory();        //sets up the window
         f.getContentPane().add("Center", applet);
         applet.init();
         f.pack();
-
+        
         f.setVisible(true); //makes it visible
         f.setResizable(false);//makes in unsizable
-        f.setBounds(480, 25, 902, 929);
+        f.setBounds(480, -25, 902, 929);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    //stops program if you x out the window
     }
-
+    
     public void paint(Graphics g) {
         dbImage = createImage(getWidth(), getHeight());      //creats and image the size of the screen
         dbg = dbImage.getGraphics();        //double buffers the panel
         paintComponent(dbg);
         g.drawImage(dbImage, 0, 0, this);
     }
-
+    
     public void paintComponent(Graphics g) {
         myPic = (Graphics2D) g;
         myPic.setFont(new Font("Dialog", Font.PLAIN, 12));
-
+        
         if (mode == 0) {
             myPic.setFont(new Font("Dialog", Font.PLAIN, 24));
             myPic.drawString("New", getWidth() / 2, 100);
             myPic.drawString("Continue", getWidth() / 2, 200);
             //myPic.fillRect(12,12,333,444);
         }
-        if (mode == 1 || mode == 2 || mode == 3 || mode == 4 || mode == 5) {
+        if (mode == 1 || mode == 2 || mode == 3 || mode == 4) {
             for (int c = 0; c < 27; c++) {
                 for (int r = 0; r < 27; r++) {
                     myPic.setColor(Color.black);
@@ -199,7 +189,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                     }
                 }
             }
-
+            
             for (int i = 0; i < 6; i++) {//Side Bars
                 myPic.setColor(Color.black);
                 myPic.fillRect(843, i * 36 + 49, 18, 18);//res ring
@@ -214,7 +204,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 myPic.drawString((int) inv[i][1] + "", i * 65 + 302, 850);//Num Items
             }
             myPic.setColor(Color.black);
-            myPic.drawString(text, 675, 575);//Info
+            myPic.drawString(text, 675, 775);//Info
 
             myPic.drawRect(10, 854, 45, 20);//Progress Bar
             myPic.drawRect(55, 854, 45, 20);
@@ -258,7 +248,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 myPic.drawString(cost[i][4] + "", 532, i * 29 + 140);
                 myPic.drawString(cost[i][5] + "", 584, i * 29 + 140);
                 myPic.drawString(cost[i][6] + "", 632, i * 29 + 140);
-
+                
             }
             myPic.drawString(res[0], 340, 120);
             myPic.drawString(res[1], 385, 120);
@@ -270,22 +260,9 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         if (mode == 3) {
             myPic.setColor(m.iColor(inv[resC][0]));//Item
             myPic.fillRect(x, y, m.sizeX(resC), m.sizeY(resC));
-
+            
         }
-        if (mode == 4) {
-            myPic.setColor(Color.white);
-            myPic.fillRect(getWidth() / 2 - 199, 160, 399, 410);
-            myPic.setColor(Color.black);
-            myPic.setFont(new Font("Dialog", Font.PLAIN, 15));
-            myPic.drawString("Crate", getWidth() / 2 - (g.getFontMetrics().stringWidth("Crate") / 2), 180);
-            myPic.drawRect(getWidth() / 2 - 200, 159, 400, 411);
-            for (int x = 0; x < 5; x++) {
-                for (int y = 0; y < 5; y++) {
-                    myPic.drawRect(x * 70 + (getWidth() / 2 - 175), y * 70 + 195, 70, 70);
-                }
-            }
-        }
-        if (mode == 5) {//Inventory
+        if (mode == 4) {//Inventory
             myPic.setColor(Color.white);
             myPic.fillRect(getWidth() / 2 - 199, 160, 399, 410);
             myPic.setColor(Color.black);
@@ -296,26 +273,35 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 for (int y = 0; y < 5; y++) {
                     myPic.setColor(Color.black);
                     myPic.drawRect(x * 70 + (getWidth() / 2 - 175), y * 70 + 195, 70, 70);
-                    myPic.setColor(m.color(store[x][y][0][0]));
+                    //myPic.setColor(m.color(invent[x][y][0][0]));
                     myPic.fillRect(x * 70 + (getWidth() / 2 - 165), y * 70 + 205, 50, 50);
                 }
             }
         }
+        if (mode == 5) {//Furnace
+            myPic.setColor(Color.white);
+            myPic.fillRect(getWidth() / 2 - 199, 160, 399, 410);
+            myPic.setColor(Color.black);
+            myPic.setFont(new Font("Dialog", Font.PLAIN, 15));
+            myPic.drawString("Inventory", getWidth() / 2 - 29, 180);
+            myPic.drawRect(getWidth() / 2 - 200, 159, 400, 411);
+        }
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         repaint();
         requestFocus();
         setFocusTraversalKeysEnabled(false);
     }
-
+    
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        posX = m.grid(e.getX());
+        posY = m.grid(e.getY());
         Rectangle p = new Rectangle(e.getX(), e.getY(), 1, 1);
         if (mode == 0) {
-
+            
         } else if (mode == 1) {
             for (int i = 0; i < 6; i++) {
                 Rectangle r = new Rectangle(i * 65 + 250, 839, 60, 60);
@@ -324,8 +310,9 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                     resC = inv[i][0];
                 }
             }
-            if (m.grid(x) < 27 && m.grid(y) < 27 && grid[m.grid(x)][m.grid(y)][2] == 1) {
-                mode = 4;
+            if (grid[posX][posY][2] == 1) {
+                System.out.println("ff");
+                mode = 5;
             }
         } else if (mode == 2) {
             for (int i = 0; i < 20; i++) {
@@ -346,10 +333,8 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                     }
                 }
             }
-
+            
         } else if (mode == 3) {
-            posX = m.grid(e.getX());
-            posY = m.grid(e.getY());
             System.out.println(posX);
             System.out.println(posY);
             if (posX < 27 && posY < 27) {
@@ -365,7 +350,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 if (m.sizeY(resC) >= 60 && m.sizeX(resC) >= 60 && posX < 26 && posY < 26) {
                     grid[posX + 1][posY + 1][2] = resC;
                 }
-
+                
                 inv[resC][1] -= 1;
                 if (inv[resC][1] <= 0) {
                     inv[resC][0] = 99;
@@ -375,7 +360,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             mode = 1;
         }
     }
-
+    
     @Override
     public void mousePressed(MouseEvent e
     ) {
@@ -419,22 +404,22 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                         time.start();
                         t = 0;
                     }
-
+                    
                 }
             } else if (e.getButton() == 3) {
-
+                
             } else if (e.getButton() == 2) {
                 String machine = ", None";
                 posX = m.grid(e.getX());
                 posY = m.grid(e.getY());
-
+                
                 text = posX + "," + posY + m.text(grid[posX][posY][0], grid[posX][posY][1]) + machine;
             }
-
+            
             repaint();
         }
     }
-
+    
     @Override
     public void mouseReleased(MouseEvent e
     ) {
@@ -448,41 +433,44 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         }
         repaint();
     }
-
+    
     @Override
     public void mouseEntered(MouseEvent e
     ) {
-
+        
     }
-
+    
     @Override
     public void mouseExited(MouseEvent e
     ) {
         // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     @Override
     public void mouseDragged(MouseEvent e
     ) {
         //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     @Override
     public void mouseMoved(MouseEvent e
     ) {
         x = e.getX();
         y = e.getY();
     }
-
+    
     @Override
     public void keyTyped(KeyEvent e
     ) {
         // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     @Override
     public void keyPressed(KeyEvent e
     ) {
+        if (e.getKeyCode() == KeyEvent.VK_Q) {
+            System.exit(1);
+        }
         //key presses
         if (e.getKeyCode() == KeyEvent.VK_E) {
             if (mode == 1) {
@@ -497,7 +485,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             }
         } else if (e.getKeyCode() == KeyEvent.VK_TAB) {
             if (mode == 1) {
-                mode = 5;
+                mode = 4;
             } else {
                 mode = 1;
             }
@@ -531,16 +519,6 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                     pw.println(inv[i][0]);
                     pw.println(inv[i][1]);
                 }
-
-                for (int x = 0; x < 8; x++) {
-                    for (int y = 0; y < 8; y++) {
-                        for (int c = 0; c < 27; c++) {
-                            for (int r = 0; r < 27; r++) {
-                                pw.println(99);
-                            }
-                        }
-                    }
-                }
                 System.out.println("Saved");
                 pw.close();
             } catch (IOException a) {
@@ -548,11 +526,11 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             }
         }
     }
-
+    
     @Override
     public void keyReleased(KeyEvent e
     ) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
 }
