@@ -29,7 +29,7 @@ import javax.swing.JFrame;
 import javax.swing.Timer;
 
 public class Factory extends JApplet implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
-    
+
     Methods m = new Methods();
     Point p = new Point();
     Graphics2D myPic;
@@ -48,7 +48,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     boolean re = true, first = false;
     Timer time;
     String text = "";
-    
+
     public Factory() {//program name
         /*
          mode 0: Main Menu
@@ -64,7 +64,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         /**
          * @param args the command line arguments
          */
-        
+
         try {//READ
             FileReader fr = new FileReader("save.txt"); //reads from text file (located in "files"
             BufferedReader br = new BufferedReader(fr);
@@ -95,7 +95,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 inv[i][0] = Integer.parseInt(br.readLine());
                 inv[i][1] = Integer.parseInt(br.readLine());
             }
-            
+
             System.out.println("Loaded");//if it works
         } catch (IOException a) {
             System.out.println("Couldn't Load");//if it fails
@@ -103,7 +103,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         addMouseListener(this);
         addMouseMotionListener(this);
         addKeyListener(this);
-        
+
         if (first == true) {
             for (int c = 0; c < 27; c++) {
                 for (int r = 0; r < 27; r++) {
@@ -116,7 +116,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         Timer run = new Timer(100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
                 for (int c = 0; c < 27; c++) {
                     for (int r = 0; r < 27; r++) {
                         if (grid[c][r][2] == 0) {
@@ -145,38 +145,38 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         run.setRepeats(true);
         run.start();
     }
-    
+
     public static void main(String[] args) {
         JFrame f = new JFrame(""); //name on program
         JApplet applet = new Factory();        //sets up the window
         f.getContentPane().add("Center", applet);
         applet.init();
         f.pack();
-        
+
         f.setVisible(true); //makes it visible
-        f.setResizable(false);//makes in unsizable
+        //f.setResizable(false);//makes in unsizable
         f.setBounds(480, -25, 902, 929);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    //stops program if you x out the window
     }
-    
+
     public void paint(Graphics g) {
         dbImage = createImage(getWidth(), getHeight());      //creats and image the size of the screen
         dbg = dbImage.getGraphics();        //double buffers the panel
         paintComponent(dbg);
         g.drawImage(dbImage, 0, 0, this);
     }
-    
+
     public void paintComponent(Graphics g) {
         myPic = (Graphics2D) g;
         myPic.setFont(new Font("Dialog", Font.PLAIN, 12));
-        
+
         if (mode == 0) {
             myPic.setFont(new Font("Dialog", Font.PLAIN, 24));
             myPic.drawString("New", getWidth() / 2, 100);
             myPic.drawString("Continue", getWidth() / 2, 200);
             //myPic.fillRect(12,12,333,444);
         }
-        if (mode == 1 || mode == 2 || mode == 3 || mode == 4) {
+        if (mode != 10) {
             for (int c = 0; c < 27; c++) {
                 for (int r = 0; r < 27; r++) {
                     myPic.setColor(Color.black);
@@ -189,7 +189,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                     }
                 }
             }
-            
+
             for (int i = 0; i < 6; i++) {//Side Bars
                 myPic.setColor(Color.black);
                 myPic.fillRect(843, i * 36 + 49, 18, 18);//res ring
@@ -248,7 +248,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 myPic.drawString(cost[i][4] + "", 532, i * 29 + 140);
                 myPic.drawString(cost[i][5] + "", 584, i * 29 + 140);
                 myPic.drawString(cost[i][6] + "", 632, i * 29 + 140);
-                
+
             }
             myPic.drawString(res[0], 340, 120);
             myPic.drawString(res[1], 385, 120);
@@ -260,7 +260,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         if (mode == 3) {
             myPic.setColor(m.iColor(inv[resC][0]));//Item
             myPic.fillRect(x, y, m.sizeX(resC), m.sizeY(resC));
-            
+
         }
         if (mode == 4) {//Inventory
             myPic.setColor(Color.white);
@@ -278,30 +278,37 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 }
             }
         }
-        if (mode == 5) {//Furnace
+        if (mode == 5||mode==6) {//Furnace
             myPic.setColor(Color.white);
-            myPic.fillRect(getWidth() / 2 - 199, 160, 399, 410);
+            myPic.fillRect(293, 160, 299, 310);
             myPic.setColor(Color.black);
             myPic.setFont(new Font("Dialog", Font.PLAIN, 15));
-            myPic.drawString("Inventory", getWidth() / 2 - 29, 180);
-            myPic.drawRect(getWidth() / 2 - 200, 159, 400, 411);
+            myPic.drawString("Furnace", 421, 180);
+            myPic.drawRect(292, 159, 300, 311);
+
+            myPic.drawRect(340, 210, 70, 70);
+            myPic.drawRect(474, 210, 70, 70);
+        }
+        if (mode == 6) {
+            myPic.setColor(Color.RED);//Item
+            myPic.fillRect(x, y, 12, 12);
         }
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         repaint();
         requestFocus();
         setFocusTraversalKeysEnabled(false);
     }
-    
+
     @Override
     public void mouseClicked(MouseEvent e) {
         posX = m.grid(e.getX());
         posY = m.grid(e.getY());
         Rectangle p = new Rectangle(e.getX(), e.getY(), 1, 1);
         if (mode == 0) {
-            
+
         } else if (mode == 1) {
             for (int i = 0; i < 6; i++) {
                 Rectangle r = new Rectangle(i * 65 + 250, 839, 60, 60);
@@ -310,7 +317,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                     resC = inv[i][0];
                 }
             }
-            if (grid[posX][posY][2] == 1) {
+            if (posX < 27 && posY < 27 && grid[posX][posY][2] == 1) {
                 System.out.println("ff");
                 mode = 5;
             }
@@ -333,7 +340,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                     }
                 }
             }
-            
+
         } else if (mode == 3) {
             System.out.println(posX);
             System.out.println(posY);
@@ -350,7 +357,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 if (m.sizeY(resC) >= 60 && m.sizeX(resC) >= 60 && posX < 26 && posY < 26) {
                     grid[posX + 1][posY + 1][2] = resC;
                 }
-                
+
                 inv[resC][1] -= 1;
                 if (inv[resC][1] <= 0) {
                     inv[resC][0] = 99;
@@ -358,9 +365,17 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 }
             }
             mode = 1;
+        } else if (mode == 5) {
+            Rectangle r = new Rectangle(340, 210, 70, 70);
+            for (int i = 0; i < 6; i++) {
+                Rectangle res = new Rectangle(843, i * 36 + 49, 18, 18);
+                if (p.intersects(res)) {
+                    mode = 6;
+                }
+            }
         }
     }
-    
+
     @Override
     public void mousePressed(MouseEvent e
     ) {
@@ -404,22 +419,22 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                         time.start();
                         t = 0;
                     }
-                    
+
                 }
             } else if (e.getButton() == 3) {
-                
+
             } else if (e.getButton() == 2) {
                 String machine = ", None";
                 posX = m.grid(e.getX());
                 posY = m.grid(e.getY());
-                
+
                 text = posX + "," + posY + m.text(grid[posX][posY][0], grid[posX][posY][1]) + machine;
             }
-            
+
             repaint();
         }
     }
-    
+
     @Override
     public void mouseReleased(MouseEvent e
     ) {
@@ -433,38 +448,38 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         }
         repaint();
     }
-    
+
     @Override
     public void mouseEntered(MouseEvent e
     ) {
-        
+
     }
-    
+
     @Override
     public void mouseExited(MouseEvent e
     ) {
         // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public void mouseDragged(MouseEvent e
     ) {
         //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public void mouseMoved(MouseEvent e
     ) {
         x = e.getX();
         y = e.getY();
     }
-    
+
     @Override
     public void keyTyped(KeyEvent e
     ) {
         // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public void keyPressed(KeyEvent e
     ) {
@@ -526,11 +541,11 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             }
         }
     }
-    
+
     @Override
     public void keyReleased(KeyEvent e
     ) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
