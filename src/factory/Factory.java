@@ -302,7 +302,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
             myPic.setColor(Color.white);
             myPic.drawString((int) grid[posX][posY][7] + "", 400, 225);//Num Items
-            myPic.drawString((int) grid[posX][posY][7] + "", 534, 225);//Num Items
+            myPic.drawString((int) grid[posX][posY][7] + "", 534, 225);//Num Fuel
         }
         if (mode == 6) {
             myPic.setColor(Color.RED);//Item
