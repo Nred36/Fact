@@ -117,11 +117,11 @@ public class Methods {
         Color c;
         if (i == 0) {//Ecavator
             c = new Color(25, 0, 0);
-        } else if (i == 1) {//Crate
+        } else if (i == 1) {//
             c = new Color(50, 0, 0);
-        } else if (i == 2) {//Storage Container
+        } else if (i == 2) {//
             c = new Color(75, 0, 0);
-        } else if (i == 3) {//Conveyor Belt
+        } else if (i == 3) {//
             c = new Color(100, 0, 0);
         } else if (i == 4) {//Pump
             c = new Color(125, 0, 0);
