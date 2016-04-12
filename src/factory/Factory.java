@@ -42,7 +42,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     int[][][] grid = new int[27][27][8];
     String[] machine = new String[20];
     String[] res = new String[7];
-    double[] rez = new double[6];
+    double[] rez = new double[8];
     int[][] cost = new int[20][7];
     int[][] inv = new int[6][2];
     boolean re = true, first = false;
@@ -202,6 +202,14 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 myPic.setColor(Color.white);
                 myPic.drawString((int) inv[i][1] + "", i * 65 + 302, 850);//Num Items
             }
+            for (int i = 0; i < 2; i++) {
+                myPic.setColor(Color.black);
+                myPic.fillRect(843, i * 36 + 265, 18, 18);//res ring
+                myPic.drawString((int) rez[i + 6] + "", 864, i * 36 + 278);//resource number               
+                myPic.setColor(m.color(i + 8));//res colour
+                myPic.fillRect(844, i * 36 + 266, 16, 16);//resource display
+            }
+
             myPic.setColor(Color.black);
             myPic.drawString(text, 675, 775);//Info
 
@@ -294,6 +302,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
             myPic.setColor(Color.white);
             myPic.drawString((int) grid[posX][posY][7] + "", 400, 225);//Num Items
+            myPic.drawString((int) grid[posX][posY][7] + "", 534, 225);//Num Items
         }
         if (mode == 6) {
             myPic.setColor(Color.RED);//Item

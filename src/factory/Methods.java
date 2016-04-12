@@ -179,10 +179,10 @@ public class Methods {
             c = new Color(45, 45, 45);
         } else if (i == 7) {//Water
             c = new Color(0, 0, 255);
-        } else if (i == 11) {
-            c = new Color(0, 0, 255);
-        } else if (i == 12) {
-            c = new Color(0, 0, 255);
+        } else if (i == 8) {
+            c = new Color(205, 100, 0);
+        } else if (i == 9) {
+            c = new Color(205, 50, 50);
         } else {
             c = new Color(255, 255, 255);
         }
