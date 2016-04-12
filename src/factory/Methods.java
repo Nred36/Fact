@@ -20,9 +20,13 @@ public class Methods {
         return (rnd);
     }
 
-    public int grid(int x) {
+    public int grid(int x, int i) {
         int pos = (int) Math.floor(x / 31);
-        return (pos);
+        if (pos < 27) {
+            return (pos);
+        } else {
+            return (i);
+        }
     }
 
     public String text(int i, int n) {
