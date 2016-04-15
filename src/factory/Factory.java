@@ -36,7 +36,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     Image dbImage, master;
     private Graphics dbg;
     Timer timer;
-    int var, posX, posY, mode = 5, resC, x, y;
+    int var, posX, posY, mode = 5, resC, x, y, mmm;
     double resN;
     long t = 0;
     int[][][] grid = new int[27][27][8];
@@ -100,6 +100,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         } catch (IOException a) {
             System.out.println("Couldn't Load");//if it fails
         }
+        System.out.println('f');
         addMouseListener(this);
         addMouseMotionListener(this);
         addKeyListener(this);
@@ -296,13 +297,13 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             myPic.drawRect(340, 210, 70, 70);
             myPic.drawRect(474, 210, 70, 70);
 
-            myPic.setColor(m.color(grid[posX][posY][7]));
+            myPic.setColor(m.color(grid[posX][posY][6]));
             myPic.fillRect(341, 211, 69, 69);
+            myPic.setColor(m.color(6));
             myPic.fillRect(475, 211, 69, 69);
-
             myPic.setColor(Color.white);
             myPic.drawString((int) grid[posX][posY][7] + "", 400, 225);//Num Items
-            myPic.drawString((int) grid[posX][posY][7] + "", 534, 225);//Num Fuel
+            myPic.drawString((int) grid[posX][posY][5] + "", 534, 225);//Num Fuel
         }
         if (mode == 6) {
             myPic.setColor(Color.RED);//Item
@@ -319,12 +320,12 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        posX = m.grid(e.getX(), posX);
-        posY = m.grid(e.getY(), posY);
         Rectangle p = new Rectangle(e.getX(), e.getY(), 1, 1);
         if (mode == 0) {
 
         } else if (mode == 1) {
+            posX = m.grid(e.getX(), posX);
+            posY = m.grid(e.getY(), posY);
             for (int i = 0; i < 6; i++) {
                 Rectangle r = new Rectangle(i * 65 + 250, 839, 60, 60);
                 if (p.intersects(r) && inv[i][0] != 99) {
@@ -356,8 +357,6 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             }
 
         } else if (mode == 3) {
-            System.out.println(posX);
-            System.out.println(posY);
             if (m.sizeX(resC) >= 30) {
                 grid[posX][posY][2] = resC;
             }
@@ -383,28 +382,34 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 Rectangle res = new Rectangle(843, i * 36 + 49, 18, 18);
                 if (p.intersects(res)) {
                     mode = 6;
-                    resC = i;
+                    mmm = i + 1;
                 }
             }
         } else if (mode == 6) {
             Rectangle i = new Rectangle(340, 210, 70, 70);
             Rectangle f = new Rectangle(474, 210, 70, 70);
             if (p.intersects(i)) {
+                if (grid[posX][posY][6] != 99) {
+                    grid[posX][posY][6] = mmm;
+                    grid[posX][posY][7] += 1;
+                }
                 mode = 5;
             } else if (p.intersects(f)) {
                 mode = 5;
+                grid[posX][posY][5] += 1;
             }
         }
+
+        repaint();
     }
 
     @Override
-    public void mousePressed(MouseEvent e
-    ) {
+    public void mousePressed(MouseEvent e) {
         re = false;
-        posX = m.grid(e.getX(), posX);
-        posY = m.grid(e.getY(), posY);
         if (e.getButton() == 1) {
             if (mode == 1) {
+                posX = m.grid(e.getX(), posX);
+                posY = m.grid(e.getY(), posY);
                 if (re == false) {
                     //time = new Timer(350, new ActionListener() {
                     time = new Timer(1, new ActionListener() {
