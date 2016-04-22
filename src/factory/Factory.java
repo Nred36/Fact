@@ -36,10 +36,10 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     Image dbImage, master;
     private Graphics dbg;
     Timer timer;
-    int var, posX, posY, mode = 5, resC, x, y;
+    int var, posX, posY, mode = 1, resC, x, y;
     double resN;
     long t = 0;
-    int[][][] grid = new int[27][27][8];
+    int[][][] grid = new int[27][27][9];
     String[] machine = new String[20];
     String[] res = new String[7];
     double[] rez = new double[8];
@@ -70,7 +70,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             BufferedReader br = new BufferedReader(fr);
             //read and puts each line in the text document into a variable
             first = Boolean.parseBoolean(br.readLine());
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < 9; i++) {
                 for (int c = 0; c < 27; c++) {
                     for (int r = 0; r < 27; r++) {
                         grid[c][r][i] = Integer.parseInt(br.readLine());
@@ -211,7 +211,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
             }
 
             myPic.setColor(Color.black);
-            myPic.drawString(text, 675, 775);//Info
+            myPic.drawString(text, 175, 175);//Info
 
             myPic.drawRect(10, 854, 45, 20);//Progress Bar
             myPic.drawRect(55, 854, 45, 20);
@@ -298,11 +298,12 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
             myPic.setColor(m.color(grid[posX][posY][7]));
             myPic.fillRect(341, 211, 69, 69);
+            myPic.setColor(m.color(6));
             myPic.fillRect(475, 211, 69, 69);
 
             myPic.setColor(Color.white);
             myPic.drawString((int) grid[posX][posY][7] + "", 400, 225);//Num Items
-            myPic.drawString((int) grid[posX][posY][7] + "", 534, 225);//Num Fuel
+            myPic.drawString((int) grid[posX][posY][5] + "", 534, 225);//Num Fuel
         }
         if (mode == 6) {
             myPic.setColor(Color.RED);//Item
@@ -319,92 +320,100 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        posX = m.grid(e.getX(), posX);
-        posY = m.grid(e.getY(), posY);
-        Rectangle p = new Rectangle(e.getX(), e.getY(), 1, 1);
-        if (mode == 0) {
+        if (e.getButton() == 1) {
+            Rectangle p = new Rectangle(e.getX(), e.getY(), 1, 1);
+            if (mode == 0) {
 
-        } else if (mode == 1) {
-            for (int i = 0; i < 6; i++) {
-                Rectangle r = new Rectangle(i * 65 + 250, 839, 60, 60);
-                if (p.intersects(r) && inv[i][0] != 99) {
-                    mode = 3;
-                    resC = inv[i][0];
+            } else if (mode == 1) {
+                posX = m.grid(e.getX(), posX);
+                posY = m.grid(e.getY(), posY);
+                for (int i = 0; i < 6; i++) {
+                    Rectangle r = new Rectangle(i * 65 + 250, 839, 60, 60);
+                    if (p.intersects(r) && inv[i][0] != 99) {
+                        mode = 3;
+                        resC = inv[i][0];
+                    }
                 }
-            }
-            if (grid[posX][posY][2] == 1) {
-                mode = 5;
-            }
-        } else if (mode == 2) {
-            for (int i = 0; i < 20; i++) {
-                Rectangle r = new Rectangle(663, i * 29 + 128, 23, 15);
-                if (p.intersects(r)) {
-                    if ((cost[i][1] <= rez[0]) && (cost[i][2] <= rez[1]) && (cost[i][3] <= rez[2]) && (cost[i][4] <= rez[3]) && (cost[i][5] <= rez[4]) && (cost[i][6] <= rez[5])) {
-                        for (int c = 0; c < 6; c++) {
-                            rez[c] -= cost[i][c + 1];
-                        }
-                        for (int c = 0; c < 6; c++) {
-                            if (inv[c][0] == 99 || inv[c][0] == i) {
-                                inv[c][0] = i;
-                                inv[c][1] += 1;
-                                c = 10;
-                                i = 30;
+                if (grid[posX][posY][2] == 1) {
+                    mode = 5;
+                }
+            } else if (mode == 2) {
+                for (int i = 0; i < 20; i++) {
+                    Rectangle r = new Rectangle(663, i * 29 + 128, 23, 15);
+                    if (p.intersects(r)) {
+                        if ((cost[i][1] <= rez[0]) && (cost[i][2] <= rez[1]) && (cost[i][3] <= rez[2]) && (cost[i][4] <= rez[3]) && (cost[i][5] <= rez[4]) && (cost[i][6] <= rez[5])) {
+                            for (int c = 0; c < 6; c++) {
+                                rez[c] -= cost[i][c + 1];
+                            }
+                            for (int c = 0; c < 6; c++) {
+                                if (inv[c][0] == 99 || inv[c][0] == i) {
+                                    inv[c][0] = i;
+                                    inv[c][1] += 1;
+                                    c = 10;
+                                    i = 30;
+                                }
                             }
                         }
                     }
                 }
-            }
 
-        } else if (mode == 3) {
-            System.out.println(posX);
-            System.out.println(posY);
-            if (m.sizeX(resC) >= 30) {
-                grid[posX][posY][2] = resC;
-            }
-            if (m.sizeX(resC) >= 60 && posX < 26) {
-                grid[posX + 1][posY][2] = resC;
-            }
-            if (m.sizeY(resC) >= 60 && posY < 26) {
-                grid[posX][posY + 1][2] = resC;
-            }
-            if (m.sizeY(resC) >= 60 && m.sizeX(resC) >= 60 && posX < 26 && posY < 26) {
-                grid[posX + 1][posY + 1][2] = resC;
-            }
-
-            inv[resC][1] -= 1;
-            if (inv[resC][1] <= 0) {
-                inv[resC][0] = 99;
-                inv[resC][1] = 0;
-            }
-
-            mode = 1;
-        } else if (mode == 5) {
-            for (int i = 0; i < 6; i++) {
-                Rectangle res = new Rectangle(843, i * 36 + 49, 18, 18);
-                if (p.intersects(res)) {
-                    mode = 6;
-                    resC = i;
+            } else if (mode == 3) {
+                posX = m.grid(e.getX(), posX);
+                posY = m.grid(e.getY(), posY);
+                if (m.sizeX(resC) >= 30) {
+                    grid[posX][posY][2] = resC;
                 }
-            }
-        } else if (mode == 6) {
-            Rectangle i = new Rectangle(340, 210, 70, 70);
-            Rectangle f = new Rectangle(474, 210, 70, 70);
-            if (p.intersects(i)) {
-                mode = 5;
-            } else if (p.intersects(f)) {
-                mode = 5;
+                if (m.sizeX(resC) >= 60 && posX < 26) {
+                    grid[posX + 1][posY][2] = resC;
+                }
+                if (m.sizeY(resC) >= 60 && posY < 26) {
+                    grid[posX][posY + 1][2] = resC;
+                }
+                if (m.sizeY(resC) >= 60 && m.sizeX(resC) >= 60 && posX < 26 && posY < 26) {
+                    grid[posX + 1][posY + 1][2] = resC;
+                }
+
+                inv[resC][1] -= 1;
+                if (inv[resC][1] <= 0) {
+                    inv[resC][0] = 99;
+                    inv[resC][1] = 0;
+                }
+
+                mode = 1;
+            } else if (mode == 5) {
+                for (int i = 0; i < 6; i++) {
+                    Rectangle res = new Rectangle(843, i * 36 + 49, 18, 18);
+                    if (p.intersects(res)) {
+                        mode = 6;
+                        resC = i;
+                    }
+                }
+            } else if (mode == 6) {
+                Rectangle i = new Rectangle(340, 210, 70, 70);
+                Rectangle f = new Rectangle(474, 210, 70, 70);
+                if (p.intersects(i)) {
+                    mode = 5;
+                    grid[posX][posY][7] = resC + 1;
+                    grid[posX][posY][8]++;
+                    rez[0]--;
+                } else if (p.intersects(f)) {
+                    mode = 5;
+                    if (m.fuel(resC) == true) {
+                        grid[posX][posY][5]++;
+                    }
+                }
             }
         }
     }
 
     @Override
-    public void mousePressed(MouseEvent e
-    ) {
+    public void mousePressed(MouseEvent e) {
         re = false;
-        posX = m.grid(e.getX(), posX);
-        posY = m.grid(e.getY(), posY);
+
         if (e.getButton() == 1) {
             if (mode == 1) {
+                posX = m.grid(e.getX(), posX);
+                posY = m.grid(e.getY(), posY);
                 if (re == false) {
                     //time = new Timer(350, new ActionListener() {
                     time = new Timer(1, new ActionListener() {
@@ -439,19 +448,18 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                     time.start();
                     t = 0;
                 }
-
-            } else if (e.getButton() == 3) {
-
-            } else if (e.getButton() == 2) {
-                String machine = ", None";
-                posX = m.grid(e.getX(), posX);
-                posY = m.grid(e.getY(), posY);
-
-                text = posX + "," + posY + m.text(grid[posX][posY][0], grid[posX][posY][1]) + machine;
             }
+        } else if (e.getButton() == 3) {
 
-            repaint();
+        } else if (e.getButton() == 2) {
+            posX = m.grid(e.getX(), posX);
+            posY = m.grid(e.getY(), posY);
+
+            text = posX + "," + posY + m.text(grid[posX][posY][0], grid[posX][posY][1]) + grid[posX][posY][3] + ": " + grid[posX][posY][5];
         }
+
+        repaint();
+
     }
 
     @Override
@@ -528,7 +536,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 FileWriter fw = new FileWriter("save.txt");//set place to write to in "Files"
                 PrintWriter pw = new PrintWriter(fw); //starts writing
                 pw.println(first);
-                for (int i = 0; i < 8; i++) {
+                for (int i = 0; i < 9; i++) {
                     for (int c = 0; c < 27; c++) {
                         for (int r = 0; r < 27; r++) {
                             pw.println(grid[c][r][i]);

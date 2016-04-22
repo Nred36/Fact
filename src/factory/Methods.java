@@ -161,6 +161,16 @@ public class Methods {
         return (c);
     }
 
+    public boolean fuel(int i) {
+        if (i == 5) {
+            return (true);
+        } else if (i == 6) {
+            return (true);
+        } else {
+            return (false);
+        }
+    }
+
     public Color color(int i) {
         Color c;
         if (i == 0) {//Grass
