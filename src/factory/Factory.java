@@ -6,6 +6,7 @@
 package factory;//package name
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -158,13 +159,14 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         f.setBounds(480, -25, 902, 929);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    //stops program if you x out the window
     }
-
+// <editor-fold defaultstate="collapsed" desc="paint">
     public void paint(Graphics g) {
         dbImage = createImage(getWidth(), getHeight());      //creats and image the size of the screen
         dbg = dbImage.getGraphics();        //double buffers the panel
         paintComponent(dbg);
         g.drawImage(dbImage, 0, 0, this);
     }
+// </editor-fold>
 
     public void paintComponent(Graphics g) {
         myPic = (Graphics2D) g;
