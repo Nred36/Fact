@@ -6,7 +6,6 @@
 package factory;//package name
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -25,6 +24,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.swing.ImageIcon;
 import javax.swing.JApplet;
 import javax.swing.JFrame;
 import javax.swing.Timer;
@@ -40,6 +40,8 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
     int var, posX, posY, mode = 1, resC, x, y;
     double resN;
     long t = 0;
+    String[] picz = new String[30];
+    Image[] img = new Image[30];
     int[][][] grid = new int[27][27][9];
     String[] machine = new String[20];
     String[] res = new String[7];
@@ -96,7 +98,10 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 inv[i][0] = Integer.parseInt(br.readLine());
                 inv[i][1] = Integer.parseInt(br.readLine());
             }
-
+            for (int i = 0; i < picz.length; i++) {
+                picz[i] = br.readLine();
+                img[i] = new ImageIcon(picz[i]).getImage();
+            }
             System.out.println("Loaded");//if it works
         } catch (IOException a) {
             System.out.println("Couldn't Load");//if it fails
@@ -160,6 +165,7 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    //stops program if you x out the window
     }
 // <editor-fold defaultstate="collapsed" desc="paint">
+
     public void paint(Graphics g) {
         dbImage = createImage(getWidth(), getHeight());      //creats and image the size of the screen
         dbg = dbImage.getGraphics();        //double buffers the panel
@@ -182,9 +188,8 @@ public class Factory extends JApplet implements ActionListener, KeyListener, Mou
                 for (int r = 0; r < 27; r++) {
                     myPic.setColor(Color.black);
                     myPic.drawRect(c * 31, r * 31, 31, 31);
-                    myPic.setColor(m.color(grid[c][r][0]));
-                    myPic.setColor(m.iColor(grid[c][r][2]));
-                    myPic.fillRect(c * 31 + 1, r * 31 + 1, 30, 30);
+                    myPic.drawImage(img[grid[c][r][0]], c * 31 + 1, r * 31 + 1, 30, 30, null);
+                    myPic.drawImage(img[grid[2][r][0]+10], c * 31 + 1, r * 31 + 1, 30, 30, null);
                     if (grid[c][r][1] == 0 && grid[c][r][0] < 7 && grid[c][r][0] != 0) {
                         grid[c][r][0] = 0;
                     }
